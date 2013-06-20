@@ -2,10 +2,10 @@ package com.kbdavid15.getjacked.workouts;
 
 import java.util.Date;
 
-public class Cardio extends Exercise {
+public class AerobicExercise extends Exercise {
 	private Date duration;
 
-	public Cardio(String name, int sets) {
+	public AerobicExercise(String name, int sets) {
 		super(name, sets);
 	}
 

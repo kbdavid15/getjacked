@@ -1,10 +1,10 @@
 package com.kbdavid15.getjacked.workouts;
 
-public class Lift extends Exercise {
+public class StrengthExercise extends Exercise {
 	private int reps;
 	private float weight;
 	
-	public Lift(String name, int sets, int reps, float weight) {
+	public StrengthExercise(String name, int sets, int reps, float weight) {
 		super(name, sets);
 	}
 

@@ -5,7 +5,6 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import com.kbdavid15.getjacked.R;
 
 public class WorkoutFragment extends Fragment {
 	
@@ -14,5 +13,5 @@ public class WorkoutFragment extends Fragment {
 			Bundle savedInstanceState) {
 		return inflater.inflate(R.layout.workout, container, false);
 	}
-
+	
 }

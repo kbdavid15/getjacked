@@ -1,9 +1,7 @@
 package com.kbdavid15.getjacked;
 
-import android.annotation.TargetApi;
 import android.content.Intent;
 import android.content.res.Configuration;
-import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.ActionBarDrawerToggle;
 import android.support.v4.app.Fragment;
@@ -25,8 +23,10 @@ public class MainActivity extends FragmentActivity {
 	private ActionBarDrawerToggle mDrawerToggle;
 	private CharSequence mDrawerTitle = "Get Jacked";
 	private CharSequence mTitle;
-
-	@TargetApi(Build.VERSION_CODES.ICE_CREAM_SANDWICH)
+	
+	private MenuItem mNewWorkoutMenuItem;
+	private MenuItem mNewExerciseMenuItem;
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -68,9 +68,6 @@ public class MainActivity extends FragmentActivity {
 		mDrawerLayout.setDrawerListener(mDrawerToggle);
 
 		getActionBar().setDisplayHomeAsUpEnabled(true);
-		if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.ICE_CREAM_SANDWICH) {
-			getActionBar().setHomeButtonEnabled(true);
-		}
 
 		// load the workout fragment as the default view
 		setTitle(mDrawerTitles[0]);
@@ -83,7 +80,32 @@ public class MainActivity extends FragmentActivity {
 	public boolean onPrepareOptionsMenu(Menu menu) {
 		// If the nav drawer is open, hide action items related to the content view
 		boolean drawerOpen = mDrawerLayout.isDrawerOpen(mDrawerList);
-		menu.findItem(R.id.action_add_workout).setVisible(!drawerOpen);
+		if (drawerOpen) {
+			mNewWorkoutMenuItem.setVisible(false);
+			mNewExerciseMenuItem.setVisible(false);
+		} else {
+			switch (mDrawerList.getCheckedItemPosition()) {
+			case 0:
+				// workout
+				mNewExerciseMenuItem.setVisible(false);
+				mNewWorkoutMenuItem.setVisible(true);
+				break;
+			case 1:
+				// Exercises
+				mNewWorkoutMenuItem.setVisible(false);
+				mNewExerciseMenuItem.setVisible(true);
+				break;
+			case 2:
+				// progress
+				mNewWorkoutMenuItem.setVisible(false);
+				mNewExerciseMenuItem.setVisible(false);
+				break;
+			case 3:
+				// settings
+				break;
+			}
+		}
+		
 		return super.onPrepareOptionsMenu(menu);
 	}
 
@@ -104,6 +126,11 @@ public class MainActivity extends FragmentActivity {
 	public boolean onCreateOptionsMenu(Menu menu) {
 		// Inflate the menu; this adds items to the action bar if it is present.
 		getMenuInflater().inflate(R.menu.main, menu);
+		
+		// get handles on the menu items
+		mNewExerciseMenuItem = menu.findItem(R.id.action_add_exercise);
+		mNewWorkoutMenuItem = menu.findItem(R.id.action_add_workout);
+		
 		return true;
 	}
 
@@ -117,14 +144,14 @@ public class MainActivity extends FragmentActivity {
 		// handle item selection
 		switch (item.getItemId()) {
 		case R.id.action_add_workout:
-			Intent intent = new Intent(this, NewWorkoutActivity.class);
-			startActivity(intent);
+			startActivity(new Intent(this, NewWorkoutActivity.class));
+			return true;
+		case R.id.action_add_exercise:
+			startActivity(new Intent(this, NewExerciseActivity.class));
 			return true;
 		default:
 			return super.onOptionsItemSelected(item);
 		}
-
-
 	}
 
 	public class DrawerItemClickListener implements OnItemClickListener {

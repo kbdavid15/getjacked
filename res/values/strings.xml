@@ -3,6 +3,8 @@
 
     <string name="app_name">Get Jacked</string>
     <string name="action_settings">Settings</string>
+    <string name="action_accept">Accept</string>
+     <string name="action_cancel">Cancel</string>
     <string name="hello_world">Hello world!</string>
 
     <string-array name="drawer_titles">
@@ -14,6 +16,11 @@
 
     <string name="drawer_open">Open</string>
     <string name="drawer_close">Close</string>
-    <string name="title_activity_new_workout">NewWorkoutActivity</string>
-
+    <string name="title_activity_new_workout">New Workout</string>
+    <string name="radio_heading">Exercise Type</string>
+    <string name="radio_aerobic">Aerobic</string>
+    <string name="radio_strength">Strength</string>
+    <string name="title_activity_new_exercise">New Exercise</string>
+    <string name="exercise_name_hint">Exercise name</string>
+	<string name="exercise_numsets_hint">Sets</string>
 </resources>

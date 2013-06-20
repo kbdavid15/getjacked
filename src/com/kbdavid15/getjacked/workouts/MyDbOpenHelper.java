@@ -18,7 +18,7 @@
 //	public static final String TABLE_EXERCISES_NAME = "exercises";
 //	public static final String COLUMN_ID = "_id";
 //	public static final String COLUMN_NAME = "name";
-//	/** Enum describing if exercise is cardio or lift or something else */
+//	/** Enum describing if exercise is aerobic or strength or something else */
 //	public static final String COLUMN_TYPE = "type";
 //	public static final String COLUMN_NUM_SETS = "numsets";
 //	public static final String COLUMN_NUM_REPS = "numreps";

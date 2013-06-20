@@ -37,6 +37,14 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.kbdavid15.getjacked.MainActivity" />
         </activity>
+        <activity
+            android:name="com.kbdavid15.getjacked.NewExerciseActivity"
+            android:label="@string/title_activity_new_exercise"
+            android:parentActivityName="com.kbdavid15.getjacked.MainActivity" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.kbdavid15.getjacked.MainActivity" />
+        </activity>
     </application>
 
 </manifest>
