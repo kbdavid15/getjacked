@@ -1,4 +1,4 @@
-package com.getjacked.workoutlog.workouts;
+package com.kbdavid15.getjacked.workouts;
 
 public class Lift extends Exercise {
 	private int reps;

@@ -1,10 +1,11 @@
-package com.getjacked.workoutlog;
+package com.kbdavid15.getjacked;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import com.kbdavid15.getjacked.R;
 
 public class WorkoutFragment extends Fragment {
 	

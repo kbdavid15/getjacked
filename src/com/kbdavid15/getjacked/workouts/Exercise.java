@@ -1,4 +1,4 @@
-package com.getjacked.workoutlog.workouts;
+package com.kbdavid15.getjacked.workouts;
 
 public class Exercise {
 	private int sets;

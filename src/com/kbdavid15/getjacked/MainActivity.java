@@ -1,4 +1,4 @@
-package com.getjacked.workoutlog;
+package com.kbdavid15.getjacked;
 
 import android.os.Bundle;
 import android.support.v4.app.ActionBarDrawerToggle;
@@ -13,6 +13,7 @@ import android.widget.ListView;
 
 import com.actionbarsherlock.app.SherlockFragmentActivity;
 import com.actionbarsherlock.view.Menu;
+import com.kbdavid15.getjacked.R;
 
 public class MainActivity extends SherlockFragmentActivity {
 	private String[] mDrawerTitles;
