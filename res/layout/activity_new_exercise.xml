@@ -15,61 +15,78 @@
         android:text="@string/radio_heading"
         android:textAppearance="?android:attr/textAppearanceMedium" />
 
-    <LinearLayout
-        android:id="@+id/linearLayout1"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content">
+    <RadioGroup
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/workout_vertical_margin"
+        android:orientation="horizontal" >
 
         <RadioButton
             android:id="@+id/radioButtonStrength"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:checked="true"
+            android:onClick="onRadioButtonClicked"
             android:text="@string/radio_strength" />
 
         <RadioButton
             android:id="@+id/radioButtonAerobic"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:onClick="onRadioButtonClicked"
             android:text="@string/radio_aerobic" />
-    </LinearLayout>
+    </RadioGroup>
 
     <EditText
         android:id="@+id/editTextExerciseName"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:ems="10" 
-        android:inputType="text" 
-        android:hint="@string/exercise_name_hint" >
+        android:layout_marginTop="@dimen/workout_vertical_margin"
+        android:ems="10"
+        android:hint="@string/exercise_name_hint"
+        android:inputType="text" >
 
         <requestFocus />
     </EditText>
 
-    <LinearLayout
+    <!-- The main content view, to be changed based on the value of the radio button -->
+
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" >
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/workout_vertical_margin" >
 
-        <SeekBar
-            android:id="@+id/seekBarNumSets"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight="3" 
-            android:max="10" />
-
-        <EditText
-            android:id="@+id/editTextNumSets"
+        <TextView
+            android:id="@+id/textViewNumSetsLabel"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:hint="@string/exercise_numsets_hint"
-            android:textAppearance="?android:attr/textAppearanceSmall" />
+            android:layout_centerVertical="true"
+            android:layout_alignParentLeft="true"
+            android:text="@string/exercise_numsets"
+            android:textAppearance="?android:attr/textAppearanceMedium" />
 
-    </LinearLayout>
-    
-    
-    <!-- The main content view, to be changed based on the value of the radio button -->
-    <FrameLayout
-        android:id="@+id/exercise_content_frame"
-        android:layout_marginTop="10dp"
+        <TextView
+            android:id="@+id/textViewNumSets"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingLeft="5dp"
+            android:layout_toRightOf="@+id/textViewNumSetsLabel"
+            android:layout_centerVertical="true"
+            android:text="1"
+            android:textAppearance="?android:attr/textAppearanceMedium" />
+
+        <Button
+            android:id="@+id/buttonSelectNumSets"
+            android:layout_width="100dp"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:text="@string/select" />
+    </RelativeLayout>
+
+    <ViewFlipper 
+        android:id="@+id/exerciseViewFlipper"
+        android:layout_marginTop="@dimen/workout_vertical_margin" 
         android:layout_width="fill_parent"
-        android:layout_height="fill_parent" />    
+        android:layout_height="fill_parent" />
+
 </LinearLayout>
