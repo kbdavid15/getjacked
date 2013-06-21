@@ -29,9 +29,10 @@ public class MyDbOpenHelper extends SQLiteOpenHelper {
 					COLUMN_ID + " integer primary key autoincrement, " +
 					COLUMN_NAME + " text not null, " +
 					COLUMN_TYPE + " integer not null, " +
-					COLUMN_NUM_SETS + " ingeger not null, " +
+					COLUMN_NUM_SETS + " integer not null, " +
 					COLUMN_NUM_REPS + " integer, " +
 					COLUMN_WEIGHT + " real);";
+	
 	
 	public static final String TABLE_WORKOUTS_NAME = "workout";	
 	public static final String COLUMN_EXERCISE_ID = "elapsedtime";
@@ -40,6 +41,19 @@ public class MyDbOpenHelper extends SQLiteOpenHelper {
 			"create table if not exists " + TABLE_WORKOUTS_NAME + "(" +
 					COLUMN_ID + " integer primary key autoincrement, " + 
 					COLUMN_EXERCISE_ID + " integer not null);";
+	
+	
+	public static final String TABLE_WORKOUT_PROGRAM_NAME = "workout_program";
+	public static final String COLUMN_PROGRAM_NAME = "program_name";
+	public static final String COLUMN_WORKOUT_ID = "workout_id";
+	public static final String COLUMN_WORKOUT_DATE = "date";
+	
+	private static final String CREATE_WORKOUT_PROGRAM_TABLE = 
+			"create table if not exists " + TABLE_WORKOUT_PROGRAM_NAME + "(" +
+					COLUMN_ID + " integer primary key autoincrement, " +
+					COLUMN_PROGRAM_NAME + " text not null, " +
+					COLUMN_WORKOUT_ID + " integer not null, " +
+					COLUMN_WORKOUT_DATE + " integer not null);";
 
 	public MyDbOpenHelper(Context context) {
 		super(context, DB_NAME, null, DB_VERSION);
@@ -49,6 +63,7 @@ public class MyDbOpenHelper extends SQLiteOpenHelper {
 	public void onCreate(SQLiteDatabase db) {
 		db.execSQL(CREATE_EXERCISE_TABLE);
 		db.execSQL(CREATE_WORKOUT_TABLE);
+		db.execSQL(CREATE_WORKOUT_PROGRAM_TABLE);
 	}
 
 	@Override
@@ -58,6 +73,7 @@ public class MyDbOpenHelper extends SQLiteOpenHelper {
 						+ newVersion + ", which will destroy all old data");
 		db.execSQL("DROP TABLE IF EXISTS " + TABLE_EXERCISES_NAME);
 		db.execSQL("DROP TABLE IF EXISTS " + TABLE_WORKOUTS_NAME);
+		db.execSQL("DROP TABLE IF EXISTS " + TABLE_WORKOUT_PROGRAM_NAME);
 		onCreate(db);
 	}
 	
