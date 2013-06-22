@@ -58,8 +58,8 @@ public class NewExerciseActivity extends FragmentActivity {
 					@Override
 					public void onClick(DialogInterface dialog, int which) {
 						int numSets = numPicker.getValue();
-						TextView tv = (TextView)getActivity().findViewById(R.id.textViewNumSets);
-						tv.setText(String.valueOf(numSets));
+//						TextView tv = (TextView)getActivity().findViewById(R.id.textViewNumSets);
+//						tv.setText(String.valueOf(numSets));
 					}
 				})
 				.setNegativeButton(R.string.action_cancel, new DialogInterface.OnClickListener() {
@@ -81,8 +81,8 @@ public class NewExerciseActivity extends FragmentActivity {
 
 		// get handles on UI elements
 		mExerciseName = (EditText)findViewById(R.id.editTextExerciseName);
-		mButtonChooseNumSets = (Button)findViewById(R.id.buttonSelectNumSets);
-		mViewFlipper = (ViewFlipper)findViewById(R.id.exerciseViewFlipper);
+//		mButtonChooseNumSets = (Button)findViewById(R.id.buttonSelectNumSets);
+//		mViewFlipper = (ViewFlipper)findViewById(R.id.exerciseViewFlipper);
 		// add event listeners
 		mButtonChooseNumSets.setOnClickListener(mNumSetsClickListener);
 		

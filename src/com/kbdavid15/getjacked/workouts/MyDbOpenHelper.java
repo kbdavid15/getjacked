@@ -8,6 +8,12 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
+/**
+ * Note: SQLite databases have an implicit column named "rowid"
+ * which is an integer primary key
+ * @author Kyle
+ *
+ */
 public class MyDbOpenHelper extends SQLiteOpenHelper {
 	private SQLiteDatabase database;
 	private String[] allColumns = { COLUMN_ID, COLUMN_NAME, COLUMN_TYPE,
@@ -15,8 +21,13 @@ public class MyDbOpenHelper extends SQLiteOpenHelper {
 	private static final String DB_NAME = "jacked.db";
 	private static final int DB_VERSION = 1;
 	
+	/**
+	 * The Exercise table contains all the exercises done by the user.
+	 * A list of all available exercises (for creating a new workout)
+	 * can be realized using "SELECT DISTINCT name FROM exercises"
+	 */
 	public static final String TABLE_EXERCISES_NAME = "exercises";
-	public static final String COLUMN_ID = "_id";
+	public static final String COLUMN_ID = "rowid";
 	public static final String COLUMN_NAME = "name";
 	/** Enum describing if exercise is aerobic or strength or something else */
 	public static final String COLUMN_TYPE = "type";
@@ -26,7 +37,6 @@ public class MyDbOpenHelper extends SQLiteOpenHelper {
 
 	private static final String CREATE_EXERCISE_TABLE = 
 			"create table if not exists " + TABLE_EXERCISES_NAME + "(" +
-					COLUMN_ID + " integer primary key autoincrement, " +
 					COLUMN_NAME + " text not null, " +
 					COLUMN_TYPE + " integer not null, " +
 					COLUMN_NUM_SETS + " integer not null, " +
@@ -39,7 +49,6 @@ public class MyDbOpenHelper extends SQLiteOpenHelper {
 	
 	private static final String CREATE_WORKOUT_TABLE = 
 			"create table if not exists " + TABLE_WORKOUTS_NAME + "(" +
-					COLUMN_ID + " integer primary key autoincrement, " + 
 					COLUMN_EXERCISE_ID + " integer not null);";
 	
 	
@@ -50,7 +59,6 @@ public class MyDbOpenHelper extends SQLiteOpenHelper {
 	
 	private static final String CREATE_WORKOUT_PROGRAM_TABLE = 
 			"create table if not exists " + TABLE_WORKOUT_PROGRAM_NAME + "(" +
-					COLUMN_ID + " integer primary key autoincrement, " +
 					COLUMN_PROGRAM_NAME + " text not null, " +
 					COLUMN_WORKOUT_ID + " integer not null, " +
 					COLUMN_WORKOUT_DATE + " integer not null);";

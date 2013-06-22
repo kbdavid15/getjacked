@@ -26,14 +26,12 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:checked="true"
-            android:onClick="onRadioButtonClicked"
             android:text="@string/radio_strength" />
 
         <RadioButton
             android:id="@+id/radioButtonAerobic"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:onClick="onRadioButtonClicked"
             android:text="@string/radio_aerobic" />
     </RadioGroup>
 
@@ -49,44 +47,44 @@
         <requestFocus />
     </EditText>
 
-    <!-- The main content view, to be changed based on the value of the radio button -->
+<!--     The main content view, to be changed based on the value of the radio button -->
 
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/workout_vertical_margin" >
+<!--     <RelativeLayout -->
+<!--         android:layout_width="match_parent" -->
+<!--         android:layout_height="wrap_content" -->
+<!--         android:layout_marginTop="@dimen/workout_vertical_margin" > -->
 
-        <TextView
-            android:id="@+id/textViewNumSetsLabel"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
-            android:layout_alignParentLeft="true"
-            android:text="@string/exercise_numsets"
-            android:textAppearance="?android:attr/textAppearanceMedium" />
+<!--         <TextView -->
+<!--             android:id="@+id/textViewNumSetsLabel" -->
+<!--             android:layout_width="wrap_content" -->
+<!--             android:layout_height="wrap_content" -->
+<!--             android:layout_centerVertical="true" -->
+<!--             android:layout_alignParentLeft="true" -->
+<!--             android:text="@string/exercise_numsets" -->
+<!--             android:textAppearance="?android:attr/textAppearanceMedium" /> -->
 
-        <TextView
-            android:id="@+id/textViewNumSets"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:paddingLeft="5dp"
-            android:layout_toRightOf="@+id/textViewNumSetsLabel"
-            android:layout_centerVertical="true"
-            android:text="1"
-            android:textAppearance="?android:attr/textAppearanceMedium" />
+<!--         <TextView -->
+<!--             android:id="@+id/textViewNumSets" -->
+<!--             android:layout_width="wrap_content" -->
+<!--             android:layout_height="wrap_content" -->
+<!--             android:paddingLeft="5dp" -->
+<!--             android:layout_toRightOf="@+id/textViewNumSetsLabel" -->
+<!--             android:layout_centerVertical="true" -->
+<!--             android:text="1" -->
+<!--             android:textAppearance="?android:attr/textAppearanceMedium" /> -->
 
-        <Button
-            android:id="@+id/buttonSelectNumSets"
-            android:layout_width="100dp"
-            android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
-            android:text="@string/select" />
-    </RelativeLayout>
+<!--         <Button -->
+<!--             android:id="@+id/buttonSelectNumSets" -->
+<!--             android:layout_width="100dp" -->
+<!--             android:layout_height="wrap_content" -->
+<!--             android:layout_alignParentRight="true" -->
+<!--             android:text="@string/select" /> -->
+<!--     </RelativeLayout> -->
 
-    <ViewFlipper 
-        android:id="@+id/exerciseViewFlipper"
-        android:layout_marginTop="@dimen/workout_vertical_margin" 
-        android:layout_width="fill_parent"
-        android:layout_height="fill_parent" />
+<!--     <ViewFlipper  -->
+<!--         android:id="@+id/exerciseViewFlipper" -->
+<!--         android:layout_marginTop="@dimen/workout_vertical_margin"  -->
+<!--         android:layout_width="fill_parent" -->
+<!--         android:layout_height="fill_parent" /> -->
 
 </LinearLayout>

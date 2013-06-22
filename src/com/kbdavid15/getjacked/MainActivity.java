@@ -147,7 +147,10 @@ public class MainActivity extends FragmentActivity {
 			startActivity(new Intent(this, NewWorkoutActivity.class));
 			return true;
 		case R.id.action_add_exercise:
-			startActivity(new Intent(this, NewExerciseActivity.class));
+			//startActivity(new Intent(this, NewExerciseActivity.class));
+			NewExerciseDialogFragment dialog = new NewExerciseDialogFragment();
+			dialog.show(getSupportFragmentManager(), "NewExerciseTag");
+			
 			return true;
 		default:
 			return super.onOptionsItemSelected(item);
@@ -177,6 +180,9 @@ public class MainActivity extends FragmentActivity {
 			fragment = new ProgressFragment();
 			break;
 		case 3:
+			fragment = new CalendarFragment();
+			break;
+		case 4:
 			// start the settings activity
 			Intent intent = new Intent(this, SettingsActivity.class);
 			startActivity(intent);
@@ -187,9 +193,7 @@ public class MainActivity extends FragmentActivity {
 
 		// Insert the fragment by replacing any existing fragment
 		FragmentManager fragmentManager = getSupportFragmentManager();
-		fragmentManager.beginTransaction()
-		.replace(R.id.content_frame, fragment)
-		.commit();
+		fragmentManager.beginTransaction().replace(R.id.content_frame, fragment).commit();
 
 		// Highlight the selected item, update the title, and close the drawer
 		mDrawerList.setItemChecked(position, true);
