@@ -11,7 +11,6 @@ import java.util.Date;
  */
 public class WorkoutProgram {
 	private String title;
-	private String description;
 	private Date startDate;
 	private ArrayList<Workout> workouts;
 	
@@ -24,12 +23,6 @@ public class WorkoutProgram {
 	}
 	public void setTitle(String title) {
 		this.title = title;
-	}
-	public String getDescription() {
-		return description;
-	}
-	public void setDescription(String description) {
-		this.description = description;
 	}
 	public Date getStartDate() {
 		return startDate;

@@ -1,6 +1,7 @@
 package com.kbdavid15.getjacked.workouts;
 
 import java.util.ArrayList;
+import java.util.Date;
 
 /**
  * 
@@ -9,18 +10,17 @@ import java.util.ArrayList;
  */
 public class Workout {
 	private String title;
-	private String description;
 	private ArrayList<Exercise> exercises;
+	private Date workoutDate;
 	
 	public Workout(String title, ArrayList<Exercise> exercises) {
 		this.title = title;
-		this.description = null;
 		this.exercises = exercises;
 	}
-	public Workout(String title, String description, ArrayList<Exercise> exercises) {
+	public Workout(String title, ArrayList<Exercise> exercises, Date workoutDate) {
 		this.title = title;
-		this.description = description;
 		this.exercises = exercises;
+		this.workoutDate = workoutDate;
 	}
 	public String getTitle() {
 		return title;
@@ -28,16 +28,16 @@ public class Workout {
 	public void setTitle(String title) {
 		this.title = title;
 	}
-	public String getDescription() {
-		return description;
-	}
-	public void setDescription(String description) {
-		this.description = description;
-	}
 	public ArrayList<Exercise> getExercises() {
 		return exercises;
 	}
 	public void setExercises(ArrayList<Exercise> exercises) {
 		this.exercises = exercises;
+	}
+	public Date getWorkoutDate() {
+		return workoutDate;
+	}
+	public void setWorkoutDate(Date workoutDate) {
+		this.workoutDate = workoutDate;
 	}
 }

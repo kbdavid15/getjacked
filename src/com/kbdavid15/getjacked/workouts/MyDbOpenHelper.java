@@ -1,7 +1,5 @@
 package com.kbdavid15.getjacked.workouts;
 
-import java.util.ArrayList;
-
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
@@ -15,11 +13,33 @@ import android.util.Log;
  *
  */
 public class MyDbOpenHelper extends SQLiteOpenHelper {
-	private SQLiteDatabase database;
-	private String[] allColumns = { COLUMN_ID, COLUMN_NAME, COLUMN_TYPE,
-			COLUMN_NUM_SETS, COLUMN_NUM_REPS, COLUMN_WEIGHT };
 	private static final String DB_NAME = "jacked.db";
-	private static final int DB_VERSION = 1;
+	private static final int DB_VERSION = 2;
+	/** Implicit column that all tables have */
+	private static final String ROW_ID = "rowid";
+	
+	/**
+	 * 
+	 */
+	public static final String TABLE_SETS_NAME = "sets";
+	/** The exercise that each set belongs to */
+	public static final String COLUMN_EXERCISE_ID = "exercise_id";
+	public static final String COLUMN_TARGET_REPS = "target_reps";
+	public static final String COLUMN_TARGET_WEIGHT = "target_weight";
+	public static final String COLUMN_TARGET_DURATION = "target_duration";
+	public static final String COLUMN_REPS = "reps";
+	public static final String COLUMN_WEIGHT = "weight";
+	public static final String COLUMN_DURATION = "duration";
+	
+	private static final String CREATE_SETS_TABLE =
+			"create table if not exists " + TABLE_SETS_NAME + "(" +
+					COLUMN_EXERCISE_ID + " integer not null, " +
+					COLUMN_TARGET_REPS + " integer, " +
+					COLUMN_TARGET_WEIGHT + " integer, " +
+					COLUMN_TARGET_DURATION + " integer, " +
+					COLUMN_REPS + " integer, " +
+					COLUMN_WEIGHT + " integer, " +
+					COLUMN_DURATION + " integer);";
 	
 	/**
 	 * The Exercise table contains all the exercises done by the user.
@@ -27,41 +47,43 @@ public class MyDbOpenHelper extends SQLiteOpenHelper {
 	 * can be realized using "SELECT DISTINCT name FROM exercises"
 	 */
 	public static final String TABLE_EXERCISES_NAME = "exercises";
-	public static final String COLUMN_ID = "rowid";
-	public static final String COLUMN_NAME = "name";
+	public static final String COLUMN_EXERCISE_NAME = "name";
+	public static final String COLUMN_EXERCISE_DESCRIPTION = "description";	
 	/** Enum describing if exercise is aerobic or strength or something else */
-	public static final String COLUMN_TYPE = "type";
-	public static final String COLUMN_NUM_SETS = "numsets";
-	public static final String COLUMN_NUM_REPS = "numreps";
-	public static final String COLUMN_WEIGHT = "weight";
+	public static final String COLUMN_EXERCISE_TYPE = "type";
+	/** The id of the workout each exercise corresponds to */
+	public static final String COLUMN_WORKOUT_ID = "workout_id";
 
 	private static final String CREATE_EXERCISE_TABLE = 
 			"create table if not exists " + TABLE_EXERCISES_NAME + "(" +
-					COLUMN_NAME + " text not null, " +
-					COLUMN_TYPE + " integer not null, " +
-					COLUMN_NUM_SETS + " integer not null, " +
-					COLUMN_NUM_REPS + " integer, " +
-					COLUMN_WEIGHT + " real);";
+					COLUMN_EXERCISE_NAME + " text not null, " +
+					COLUMN_EXERCISE_DESCRIPTION + " text, " +
+					COLUMN_EXERCISE_TYPE + " text not null, " +
+					COLUMN_WORKOUT_ID + " integer);";
 	
-	
-	public static final String TABLE_WORKOUTS_NAME = "workout";	
-	public static final String COLUMN_EXERCISE_ID = "elapsedtime";
+	/**
+	 * 
+	 */
+	public static final String TABLE_WORKOUTS_NAME = "workout";
+	public static final String COLUMN_WORKOUT_DATE = "date";
+	/** The id of the WorkoutProgram each Workout corresponds to */
+	public static final String COLUMN_WORKOUTPROGRAM_ID = "program_id";
 	
 	private static final String CREATE_WORKOUT_TABLE = 
 			"create table if not exists " + TABLE_WORKOUTS_NAME + "(" +
-					COLUMN_EXERCISE_ID + " integer not null);";
+					COLUMN_WORKOUT_DATE + " integer, " +
+					COLUMN_WORKOUTPROGRAM_ID + " integer not null);";
 	
 	
+	/**
+	 * 
+	 */
 	public static final String TABLE_WORKOUT_PROGRAM_NAME = "workout_program";
 	public static final String COLUMN_PROGRAM_NAME = "program_name";
-	public static final String COLUMN_WORKOUT_ID = "workout_id";
-	public static final String COLUMN_WORKOUT_DATE = "date";
 	
 	private static final String CREATE_WORKOUT_PROGRAM_TABLE = 
 			"create table if not exists " + TABLE_WORKOUT_PROGRAM_NAME + "(" +
-					COLUMN_PROGRAM_NAME + " text not null, " +
-					COLUMN_WORKOUT_ID + " integer not null, " +
-					COLUMN_WORKOUT_DATE + " integer not null);";
+					COLUMN_PROGRAM_NAME + " text not null);";
 
 	public MyDbOpenHelper(Context context) {
 		super(context, DB_NAME, null, DB_VERSION);
@@ -69,6 +91,7 @@ public class MyDbOpenHelper extends SQLiteOpenHelper {
 
 	@Override
 	public void onCreate(SQLiteDatabase db) {
+		db.execSQL(CREATE_SETS_TABLE);
 		db.execSQL(CREATE_EXERCISE_TABLE);
 		db.execSQL(CREATE_WORKOUT_TABLE);
 		db.execSQL(CREATE_WORKOUT_PROGRAM_TABLE);
@@ -79,35 +102,26 @@ public class MyDbOpenHelper extends SQLiteOpenHelper {
 		Log.w(MyDbOpenHelper.class.getName(),
 				"Upgrading database from version " + oldVersion + " to "
 						+ newVersion + ", which will destroy all old data");
+		db.execSQL("DROP TABLE IF EXISTS " + TABLE_SETS_NAME);
 		db.execSQL("DROP TABLE IF EXISTS " + TABLE_EXERCISES_NAME);
 		db.execSQL("DROP TABLE IF EXISTS " + TABLE_WORKOUTS_NAME);
 		db.execSQL("DROP TABLE IF EXISTS " + TABLE_WORKOUT_PROGRAM_NAME);
 		onCreate(db);
 	}
 	
-//	public void getAllPointsForFile(String filePath) {
-//		ArrayList<LocationCoordinate> points = new ArrayList<LocationCoordinate>();
-//		database = getReadableDatabase();
-//		
-//		// find the data associated with the chosen video
-//		String selectCriteria = COLUMN_FILENAME + " = '" + filePath + "'";
-//		Cursor cursor = database.query(TABLE_GPS_LOCATION_NAME, allColumns, selectCriteria, null, null, null, null);
-//		cursor.moveToFirst();
-//		while (!cursor.isAfterLast()) {
-//			String selectId = COLUMN_ID + " = " + cursor.getLong(0);
-//			Cursor vidCursor = database.query(TABLE_VIDEO_LOCATION, new String[] { COLUMN_VIDEO_ELAPSED }, selectId, null, null, null, null);
-//			vidCursor.moveToFirst();
-//			points.add(new LocationCoordinate(cursor, vidCursor.getInt(0)));
-//			cursor.moveToNext();
-//		}
-//		database.close();
-//		return points;
-//	}
-
-	public SQLiteDatabase getDatabase() {
-		return database;
-	}
-	public void setDatabase(SQLiteDatabase database) {
-		this.database = database;
+	public Cursor getExercises() {
+		String rawQuery = "SELECT " +
+				ROW_ID + " as _id, " + 
+				COLUMN_EXERCISE_NAME + ", " +
+				COLUMN_EXERCISE_DESCRIPTION + ", " +
+				COLUMN_EXERCISE_TYPE + " FROM " +
+				TABLE_EXERCISES_NAME + ";";
+		
+		Cursor cursor = getReadableDatabase().rawQuery(rawQuery, null);
+		
+		if (cursor != null)
+			cursor.moveToFirst();
+		
+		return cursor;
 	}
 }

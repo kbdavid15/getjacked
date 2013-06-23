@@ -4,43 +4,34 @@ import java.util.ArrayList;
 
 public class Exercise {
 	private String name;
-	private String description;
 	private ArrayList<ExerciseSet> setList;
 	private ExerciseType type;
+	private String description;
 
-	public Exercise(String name, ExerciseType type, ArrayList<ExerciseSet> sets) {
+	public Exercise(ExerciseType type, String name, ArrayList<ExerciseSet> sets) {
 		this.name = name;
-		this.setType(type);
+		this.type = type;
 		this.setList = sets;
-		this.description = null;
 	}
-	public Exercise(String name, ExerciseType type, String description, ArrayList<ExerciseSet> sets) {
+	public Exercise(ExerciseType type, String name) {
 		this.name = name;
-		this.setType(type);
+		this.type = type;
+	}
+	public Exercise(ExerciseType type, String name, String description) {
+		this.type = type;
+		this.name = name;
 		this.description = description;
-		this.setList = sets;
 	}
 
 	public String getName() {
 		return name;
 	}
-
 	public void setName(String name) {
 		this.name = name;
 	}
-
-	public String getDescription() {
-		return description;
-	}
-
-	public void setDescription(String description) {
-		this.description = description;
-	}
-
 	public ArrayList<ExerciseSet> getSetList() {
 		return setList;
 	}
-
 	public void setSetList(ArrayList<ExerciseSet> setList) {
 		this.setList = setList;
 	}
@@ -49,5 +40,11 @@ public class Exercise {
 	}
 	public void setType(ExerciseType type) {
 		this.type = type;
+	}
+	public String getDescription() {
+		return description;
+	}
+	public void setDescription(String description) {
+		this.description = description;
 	}
 }

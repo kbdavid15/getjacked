@@ -1,0 +1,9 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android" >
+
+    <item
+        android:id="@+id/action_add_workout"
+        android:icon="@drawable/content_new"
+        android:showAsAction="always|withText"
+        android:title="New Workout"/>
+
+</menu>

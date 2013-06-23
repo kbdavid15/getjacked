@@ -69,45 +69,52 @@ public class MainActivity extends FragmentActivity {
 
 		getActionBar().setDisplayHomeAsUpEnabled(true);
 
-		// load the workout fragment as the default view
+		// load the programs fragment as the default view
 		setTitle(mDrawerTitles[0]);
-		Fragment fragment = new WorkoutFragment();
+		Fragment fragment = new WorkoutProgramFragment();
 		getSupportFragmentManager().beginTransaction().replace(R.id.content_frame, fragment).commit();
 	}
 
 	/* Called whenever we call invalidateOptionsMenu() */
-	@Override
-	public boolean onPrepareOptionsMenu(Menu menu) {
-		// If the nav drawer is open, hide action items related to the content view
-		boolean drawerOpen = mDrawerLayout.isDrawerOpen(mDrawerList);
-		if (drawerOpen) {
-			mNewWorkoutMenuItem.setVisible(false);
-			mNewExerciseMenuItem.setVisible(false);
-		} else {
-			switch (mDrawerList.getCheckedItemPosition()) {
-			case 0:
-				// workout
-				mNewExerciseMenuItem.setVisible(false);
-				mNewWorkoutMenuItem.setVisible(true);
-				break;
-			case 1:
-				// Exercises
-				mNewWorkoutMenuItem.setVisible(false);
-				mNewExerciseMenuItem.setVisible(true);
-				break;
-			case 2:
-				// progress
-				mNewWorkoutMenuItem.setVisible(false);
-				mNewExerciseMenuItem.setVisible(false);
-				break;
-			case 3:
-				// settings
-				break;
-			}
-		}
-		
-		return super.onPrepareOptionsMenu(menu);
-	}
+//	@Override
+//	public boolean onPrepareOptionsMenu(Menu menu) {
+//		// If the nav drawer is open, hide action items related to the content view
+//		boolean drawerOpen = mDrawerLayout.isDrawerOpen(mDrawerList);
+//		if (drawerOpen) {
+//			mNewWorkoutMenuItem.setVisible(false);
+//			mNewExerciseMenuItem.setVisible(false);
+//		} else {
+//			//TODO have each fragment manage menu items independently
+//			switch (mDrawerList.getCheckedItemPosition()) {
+//			case 0:
+//				// Workout plans
+//				
+//			case 1:
+//				// workout
+//				mNewExerciseMenuItem.setVisible(false);
+//				mNewWorkoutMenuItem.setVisible(true);
+//				break;
+//			case 2:
+//				// Exercises
+//				mNewWorkoutMenuItem.setVisible(false);
+//				mNewExerciseMenuItem.setVisible(true);
+//				break;
+//			case 3:
+//				// progress
+//				mNewWorkoutMenuItem.setVisible(false);
+//				mNewExerciseMenuItem.setVisible(false);
+//				break;
+//			case 4:
+//				// calendar
+//				break;
+//			case 5:
+//				// settings
+//				break;
+//			}
+//		}
+//		
+//		return super.onPrepareOptionsMenu(menu);
+//	}
 
 	@Override
 	protected void onPostCreate(Bundle savedInstanceState) {
@@ -127,9 +134,9 @@ public class MainActivity extends FragmentActivity {
 		// Inflate the menu; this adds items to the action bar if it is present.
 		getMenuInflater().inflate(R.menu.main, menu);
 		
-		// get handles on the menu items
-		mNewExerciseMenuItem = menu.findItem(R.id.action_add_exercise);
-		mNewWorkoutMenuItem = menu.findItem(R.id.action_add_workout);
+//		// get handles on the menu items
+//		mNewExerciseMenuItem = menu.findItem(R.id.action_add_exercise);
+//		mNewWorkoutMenuItem = menu.findItem(R.id.action_add_workout);
 		
 		return true;
 	}
@@ -143,15 +150,15 @@ public class MainActivity extends FragmentActivity {
 		}
 		// handle item selection
 		switch (item.getItemId()) {
-		case R.id.action_add_workout:
-			startActivity(new Intent(this, NewWorkoutActivity.class));
-			return true;
-		case R.id.action_add_exercise:
-			//startActivity(new Intent(this, NewExerciseActivity.class));
-			NewExerciseDialogFragment dialog = new NewExerciseDialogFragment();
-			dialog.show(getSupportFragmentManager(), "NewExerciseTag");
-			
-			return true;
+//		case R.id.action_add_workout:
+//			startActivity(new Intent(this, NewWorkoutActivity.class));
+//			return true;
+//		case R.id.action_add_exercise:
+//			//startActivity(new Intent(this, NewExerciseActivity.class));
+//			NewExerciseDialogFragment dialog = new NewExerciseDialogFragment();
+//			dialog.show(getSupportFragmentManager(), "NewExerciseTag");
+//			
+//			return true;
 		default:
 			return super.onOptionsItemSelected(item);
 		}
@@ -171,21 +178,23 @@ public class MainActivity extends FragmentActivity {
 		Fragment fragment;
 		switch (position) {
 		case 0:
-			fragment = new WorkoutFragment();
+			fragment = new WorkoutProgramFragment();
 			break;
 		case 1:
-			fragment = new ExerciseFragment();
+			fragment = new WorkoutFragment();
 			break;
 		case 2:
-			fragment = new ProgressFragment();
+			fragment = new ExerciseFragment();
 			break;
 		case 3:
-			fragment = new CalendarFragment();
+			fragment = new ProgressFragment();
 			break;
 		case 4:
+			fragment = new CalendarFragment();
+			break;
+		case 5:
 			// start the settings activity
-			Intent intent = new Intent(this, SettingsActivity.class);
-			startActivity(intent);
+			startActivity(new Intent(this, SettingsActivity.class));
 			return;
 		default:
 			return;
