@@ -45,6 +45,13 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.kbdavid15.getjacked.MainActivity" />
         </activity>
+
+        <provider
+            android:name="com.kbdavid15.getjacked.MyContentProvider"
+            android:authorities="com.kbdavid15.getjacked"
+            android:enabled="true"
+            android:exported="false" >
+        </provider>
     </application>
 
 </manifest>

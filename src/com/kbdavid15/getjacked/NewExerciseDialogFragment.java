@@ -22,7 +22,7 @@ public class NewExerciseDialogFragment extends DialogFragment {
 	@Override
 	public Dialog onCreateDialog(Bundle savedInstanceState) {
 		// inflate the view for the dialog
-		final View view = getActivity().getLayoutInflater().inflate(R.layout.activity_new_exercise, null);
+		View view = getActivity().getLayoutInflater().inflate(R.layout.activity_new_exercise, null);
 		AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
 		builder.setTitle(R.string.title_activity_new_exercise);
 		builder.setView(view);
@@ -30,10 +30,10 @@ public class NewExerciseDialogFragment extends DialogFragment {
 			@Override
 			public void onClick(DialogInterface dialog, int which) {
 				// get the input from the dialog
-				RadioButton strengthRb = (RadioButton)view.findViewById(R.id.radioButtonStrength);
+				RadioButton strengthRb = (RadioButton)((AlertDialog)dialog).findViewById(R.id.radioButtonStrength);
 				ExerciseType type = strengthRb.isChecked() ? ExerciseType.EXERCISE_STRENGTH : ExerciseType.EXERCISE_AEROBIC;
-			    String name = ((EditText)view.findViewById(R.id.editTextExerciseName)).getText().toString();
-			    String description = ((EditText)view.findViewById(R.id.editTextDescription)).getText().toString();
+			    String name = ((EditText)((AlertDialog)dialog).findViewById(R.id.editTextExerciseName)).getText().toString();
+			    String description = ((EditText)((AlertDialog)dialog).findViewById(R.id.editTextDescription)).getText().toString();
 			    
 			    Exercise exercise = new Exercise(type, name, description);
 			    ((ExerciseFragment)getTargetFragment()).onExerciseCreated(exercise);

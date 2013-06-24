@@ -4,6 +4,7 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.provider.BaseColumns;
 import android.util.Log;
 
 /**
@@ -14,9 +15,7 @@ import android.util.Log;
  */
 public class MyDbOpenHelper extends SQLiteOpenHelper {
 	private static final String DB_NAME = "jacked.db";
-	private static final int DB_VERSION = 2;
-	/** Implicit column that all tables have */
-	private static final String ROW_ID = "rowid";
+	private static final int DB_VERSION = 3;
 	
 	/**
 	 * 
@@ -33,6 +32,7 @@ public class MyDbOpenHelper extends SQLiteOpenHelper {
 	
 	private static final String CREATE_SETS_TABLE =
 			"create table if not exists " + TABLE_SETS_NAME + "(" +
+					BaseColumns._ID + " integer primary key autoincrement, " +
 					COLUMN_EXERCISE_ID + " integer not null, " +
 					COLUMN_TARGET_REPS + " integer, " +
 					COLUMN_TARGET_WEIGHT + " integer, " +
@@ -56,6 +56,7 @@ public class MyDbOpenHelper extends SQLiteOpenHelper {
 
 	private static final String CREATE_EXERCISE_TABLE = 
 			"create table if not exists " + TABLE_EXERCISES_NAME + "(" +
+					BaseColumns._ID + " integer primary key autoincrement, " +
 					COLUMN_EXERCISE_NAME + " text not null, " +
 					COLUMN_EXERCISE_DESCRIPTION + " text, " +
 					COLUMN_EXERCISE_TYPE + " text not null, " +
@@ -71,6 +72,7 @@ public class MyDbOpenHelper extends SQLiteOpenHelper {
 	
 	private static final String CREATE_WORKOUT_TABLE = 
 			"create table if not exists " + TABLE_WORKOUTS_NAME + "(" +
+					BaseColumns._ID + " integer primary key autoincrement, " +
 					COLUMN_WORKOUT_DATE + " integer, " +
 					COLUMN_WORKOUTPROGRAM_ID + " integer not null);";
 	
@@ -83,6 +85,7 @@ public class MyDbOpenHelper extends SQLiteOpenHelper {
 	
 	private static final String CREATE_WORKOUT_PROGRAM_TABLE = 
 			"create table if not exists " + TABLE_WORKOUT_PROGRAM_NAME + "(" +
+					BaseColumns._ID + " integer primary key autoincrement, " +
 					COLUMN_PROGRAM_NAME + " text not null);";
 
 	public MyDbOpenHelper(Context context) {
@@ -110,14 +113,10 @@ public class MyDbOpenHelper extends SQLiteOpenHelper {
 	}
 	
 	public Cursor getExercises() {
-		String rawQuery = "SELECT " +
-				ROW_ID + " as _id, " + 
-				COLUMN_EXERCISE_NAME + ", " +
-				COLUMN_EXERCISE_DESCRIPTION + ", " +
-				COLUMN_EXERCISE_TYPE + " FROM " +
-				TABLE_EXERCISES_NAME + ";";
-		
-		Cursor cursor = getReadableDatabase().rawQuery(rawQuery, null);
+		Cursor cursor = getReadableDatabase().query(
+				TABLE_EXERCISES_NAME,
+				new String[] { BaseColumns._ID, COLUMN_EXERCISE_NAME, COLUMN_EXERCISE_DESCRIPTION, COLUMN_EXERCISE_TYPE },
+				null, null, null, null, null);
 		
 		if (cursor != null)
 			cursor.moveToFirst();

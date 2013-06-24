@@ -5,6 +5,8 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.support.v4.app.ListFragment;
+import android.support.v4.app.LoaderManager.LoaderCallbacks;
+import android.support.v4.content.Loader;
 import android.support.v4.widget.SimpleCursorAdapter;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -17,9 +19,11 @@ import android.widget.ListView;
 import com.kbdavid15.getjacked.workouts.Exercise;
 import com.kbdavid15.getjacked.workouts.MyDbOpenHelper;
 
-public class ExerciseFragment extends ListFragment {
+public class ExerciseFragment extends ListFragment implements LoaderCallbacks<Cursor> {
 	private MyDbOpenHelper dbHelper;
 	private SimpleCursorAdapter cursorAdapter;
+	
+	private static final int EXERCISE_LOADER_ID = 0;
 	
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -27,6 +31,15 @@ public class ExerciseFragment extends ListFragment {
 		super.onCreate(savedInstanceState);
 		setHasOptionsMenu(true);
 		dbHelper = new MyDbOpenHelper(getActivity());
+	}
+	@Override
+	public void onActivityCreated(Bundle savedInstanceState) {
+		super.onActivityCreated(savedInstanceState);
+		
+		// Prepare the loader.  Either re-connect with an existing one,
+		// or start a new one.
+		getLoaderManager().initLoader(EXERCISE_LOADER_ID, null, this);
+		
 	}
 	
 	@Override
@@ -107,5 +120,22 @@ public class ExerciseFragment extends ListFragment {
 	public void onListItemClick(ListView l, View v, int position, long id) {
 		// TODO Auto-generated method stub
 		super.onListItemClick(l, v, position, id);
+	}
+	
+	
+	@Override
+	public Loader<Cursor> onCreateLoader(int arg0, Bundle arg1) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+	@Override
+	public void onLoadFinished(Loader<Cursor> arg0, Cursor arg1) {
+		// TODO Auto-generated method stub
+		
+	}
+	@Override
+	public void onLoaderReset(Loader<Cursor> arg0) {
+		// TODO Auto-generated method stub
+		
 	}
 }

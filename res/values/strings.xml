@@ -29,5 +29,6 @@
     <string name="exercise_numsets">Number of Sets:</string>
     <string name="exercise_numreps">Number of Reps:</string>
     <string name="sets_dialog_title">Number of Sets</string>
+    <string name="title_dialog_newProgram">New Workout Program</string>
 
 </resources>
