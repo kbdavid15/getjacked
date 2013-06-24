@@ -53,7 +53,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/workout_vertical_margin"
         android:ems="10"
-        android:hint="Description"
+        android:hint="@string/description"
         android:inputType="textMultiLine|textCapSentences" />
 
 <!--     The main content view, to be changed based on the value of the radio button -->

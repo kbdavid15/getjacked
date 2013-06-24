@@ -24,9 +24,6 @@ public class MainActivity extends FragmentActivity {
 	private CharSequence mDrawerTitle = "Get Jacked";
 	private CharSequence mTitle;
 	
-	private MenuItem mNewWorkoutMenuItem;
-	private MenuItem mNewExerciseMenuItem;
-	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);

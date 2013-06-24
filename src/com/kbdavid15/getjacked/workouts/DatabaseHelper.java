@@ -1,5 +1,6 @@
 package com.kbdavid15.getjacked.workouts;
 
+import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
@@ -15,7 +16,7 @@ import android.util.Log;
  */	
 public class DatabaseHelper extends SQLiteOpenHelper {
 	private static final String DB_NAME = "jacked.db";
-	private static final int DB_VERSION = 3;
+	private static final int DB_VERSION = 4;
 	
 	/**
 	 * 
@@ -81,12 +82,12 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 	 * 
 	 */
 	public static final String TABLE_WORKOUT_PROGRAM_NAME = "workout_program";
-	public static final String COLUMN_PROGRAM_NAME = "program_name";
+	public static final String COLUMN_PROGRAM_TITLE = "program_title";
 	
 	private static final String CREATE_WORKOUT_PROGRAM_TABLE = 
 			"create table if not exists " + TABLE_WORKOUT_PROGRAM_NAME + "(" +
 					BaseColumns._ID + " integer primary key autoincrement, " +
-					COLUMN_PROGRAM_NAME + " text not null);";
+					COLUMN_PROGRAM_TITLE + " text not null);";
 	
 	
 	private static DatabaseHelper mInstance;
@@ -132,5 +133,15 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 			cursor.moveToFirst();
 		
 		return cursor;
+	}
+	
+	public long insertProgram(WorkoutProgram program) {
+		ContentValues values = new ContentValues();
+		values.put(COLUMN_PROGRAM_TITLE, program.getTitle());
+		
+		return getWritableDatabase().insert(
+				TABLE_WORKOUT_PROGRAM_NAME,
+				null,
+				values);
 	}
 }

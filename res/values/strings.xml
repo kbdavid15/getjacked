@@ -30,5 +30,11 @@
     <string name="exercise_numreps">Number of Reps:</string>
     <string name="sets_dialog_title">Number of Sets</string>
     <string name="title_dialog_newProgram">New Workout Program</string>
+    <string name="description">Description</string>
+    <string name="name">Name</string>
+    
+    <string name="li_reps">Reps</string>
+    <string name="li_sets">Sets</string>
+    <string name="li_weight">Weight</string>
 
 </resources>

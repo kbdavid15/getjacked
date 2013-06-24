@@ -14,6 +14,7 @@ import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 
+import com.kbdavid15.getjacked.workouts.DatabaseHelper;
 import com.kbdavid15.getjacked.workouts.WorkoutProgram;
 
 public class NewProgramDialogFragment extends DialogFragment {
@@ -46,7 +47,9 @@ public class NewProgramDialogFragment extends DialogFragment {
 				
 				WorkoutProgram program = new WorkoutProgram(
 						programName.getText().toString(), null);
-				((WorkoutProgramFragment)getTargetFragment()).onProgramAdded(program);
+				
+				// insert the program into the database
+				DatabaseHelper.getInstance(getActivity()).insertProgram(program);
 			}
 		});
 		builder.setNegativeButton(R.string.action_cancel, null);

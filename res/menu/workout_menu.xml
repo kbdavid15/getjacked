@@ -4,6 +4,6 @@
         android:id="@+id/action_add_workout"
         android:icon="@drawable/content_new"
         android:showAsAction="always|withText"
-        android:title="New Workout"/>
+        android:title="@string/title_activity_new_workout"/>
 
 </menu>
