@@ -17,10 +17,10 @@ import android.view.ViewGroup;
 import android.widget.ListView;
 
 import com.kbdavid15.getjacked.workouts.Exercise;
-import com.kbdavid15.getjacked.workouts.MyDbOpenHelper;
+import com.kbdavid15.getjacked.workouts.DatabaseHelper;
 
 public class ExerciseFragment extends ListFragment implements LoaderCallbacks<Cursor> {
-	private MyDbOpenHelper dbHelper;
+	private DatabaseHelper dbHelper;
 	private SimpleCursorAdapter cursorAdapter;
 	
 	private static final int EXERCISE_LOADER_ID = 0;
@@ -30,7 +30,7 @@ public class ExerciseFragment extends ListFragment implements LoaderCallbacks<Cu
 		// TODO Auto-generated method stub
 		super.onCreate(savedInstanceState);
 		setHasOptionsMenu(true);
-		dbHelper = new MyDbOpenHelper(getActivity());
+		dbHelper = DatabaseHelper.getInstance(getActivity());
 	}
 	@Override
 	public void onActivityCreated(Bundle savedInstanceState) {
@@ -57,9 +57,9 @@ public class ExerciseFragment extends ListFragment implements LoaderCallbacks<Cu
 		
 		// The columns to be bound
 		String[] columns = new String[] {
-				MyDbOpenHelper.COLUMN_EXERCISE_NAME,
-				MyDbOpenHelper.COLUMN_EXERCISE_DESCRIPTION,
-				MyDbOpenHelper.COLUMN_EXERCISE_TYPE
+				DatabaseHelper.COLUMN_EXERCISE_NAME,
+				DatabaseHelper.COLUMN_EXERCISE_DESCRIPTION,
+				DatabaseHelper.COLUMN_EXERCISE_TYPE
 		};
 		
 		// the xml defined values the data will be bound to
@@ -106,11 +106,11 @@ public class ExerciseFragment extends ListFragment implements LoaderCallbacks<Cu
 			public void run() {
 				SQLiteDatabase db = dbHelper.getWritableDatabase();
 				ContentValues values = new ContentValues();
-				values.put(MyDbOpenHelper.COLUMN_EXERCISE_NAME, e.getName());
-				values.put(MyDbOpenHelper.COLUMN_EXERCISE_DESCRIPTION, e.getDescription());
-				values.put(MyDbOpenHelper.COLUMN_EXERCISE_TYPE, e.getType().name());
+				values.put(DatabaseHelper.COLUMN_EXERCISE_NAME, e.getName());
+				values.put(DatabaseHelper.COLUMN_EXERCISE_DESCRIPTION, e.getDescription());
+				values.put(DatabaseHelper.COLUMN_EXERCISE_TYPE, e.getType().name());
 				
-				db.insert(MyDbOpenHelper.TABLE_EXERCISES_NAME, null, values);
+				db.insert(DatabaseHelper.TABLE_EXERCISES_NAME, null, values);
 			}
 		};
 		r.run();

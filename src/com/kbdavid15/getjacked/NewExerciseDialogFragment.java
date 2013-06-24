@@ -2,7 +2,7 @@ package com.kbdavid15.getjacked;
 
 import com.kbdavid15.getjacked.workouts.Exercise;
 import com.kbdavid15.getjacked.workouts.ExerciseType;
-import com.kbdavid15.getjacked.workouts.MyDbOpenHelper;
+import com.kbdavid15.getjacked.workouts.DatabaseHelper;
 
 import android.app.AlertDialog;
 import android.app.Dialog;

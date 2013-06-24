@@ -12,8 +12,8 @@ import android.util.Log;
  * which is an integer primary key
  * @author Kyle
  *
- */
-public class MyDbOpenHelper extends SQLiteOpenHelper {
+ */	
+public class DatabaseHelper extends SQLiteOpenHelper {
 	private static final String DB_NAME = "jacked.db";
 	private static final int DB_VERSION = 3;
 	
@@ -87,11 +87,21 @@ public class MyDbOpenHelper extends SQLiteOpenHelper {
 			"create table if not exists " + TABLE_WORKOUT_PROGRAM_NAME + "(" +
 					BaseColumns._ID + " integer primary key autoincrement, " +
 					COLUMN_PROGRAM_NAME + " text not null);";
-
-	public MyDbOpenHelper(Context context) {
-		super(context, DB_NAME, null, DB_VERSION);
+	
+	
+	private static DatabaseHelper mInstance;
+	private Context context;
+	
+	public static DatabaseHelper getInstance(Context context) {
+		if (mInstance == null)
+			mInstance = new DatabaseHelper(context.getApplicationContext());
+		return mInstance;
 	}
-
+	private DatabaseHelper(Context context) {
+		super(context, DB_NAME, null, DB_VERSION);
+		this.context = context;
+	}
+	
 	@Override
 	public void onCreate(SQLiteDatabase db) {
 		db.execSQL(CREATE_SETS_TABLE);
@@ -102,7 +112,7 @@ public class MyDbOpenHelper extends SQLiteOpenHelper {
 
 	@Override
 	public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-		Log.w(MyDbOpenHelper.class.getName(),
+		Log.w(DatabaseHelper.class.getName(),
 				"Upgrading database from version " + oldVersion + " to "
 						+ newVersion + ", which will destroy all old data");
 		db.execSQL("DROP TABLE IF EXISTS " + TABLE_SETS_NAME);
