@@ -6,6 +6,7 @@ import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnClickListener;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 import android.view.View;
@@ -48,8 +49,8 @@ public class NewProgramDialogFragment extends DialogFragment {
 				WorkoutProgram program = new WorkoutProgram(
 						programName.getText().toString(), null);
 				
-				// insert the program into the database
-				DatabaseHelper.getInstance(getActivity()).insertProgram(program);
+				// insert the program into the database using async task
+				new AsyncInsertProgram().execute(program);
 			}
 		});
 		builder.setNegativeButton(R.string.action_cancel, null);
@@ -61,5 +62,22 @@ public class NewProgramDialogFragment extends DialogFragment {
 				InputMethodManager.SHOW_IMPLICIT);
 		
 		return dialog = builder.create();
+	}
+	
+	private class AsyncInsertProgram extends AsyncTask<WorkoutProgram, Integer, Integer> {
+
+		@Override
+		protected Integer doInBackground(WorkoutProgram... programs) {
+			// inserts the programs into the database
+			int numberInserted = 0;
+			for (int i = 0; i < programs.length; i++) {
+				long id = DatabaseHelper.getInstance(getActivity()).insertProgram(programs[i]);
+				if (id >= 0) {
+					numberInserted++;
+				}	// else an error occurred
+			}
+			DatabaseHelper.closeDatabase();
+			return numberInserted;
+		}
 	}
 }

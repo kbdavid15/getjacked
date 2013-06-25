@@ -1,8 +1,8 @@
 package com.kbdavid15.getjacked;
 
-import android.content.ContentValues;
+import android.app.Activity;
+import android.content.Intent;
 import android.database.Cursor;
-import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.support.v4.app.ListFragment;
 import android.support.v4.app.LoaderManager.LoaderCallbacks;
@@ -16,21 +16,19 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
 
-import com.kbdavid15.getjacked.workouts.Exercise;
 import com.kbdavid15.getjacked.workouts.DatabaseHelper;
 
 public class ExerciseFragment extends ListFragment implements LoaderCallbacks<Cursor> {
-	private DatabaseHelper dbHelper;
 	private SimpleCursorAdapter cursorAdapter;
 	
-	private static final int EXERCISE_LOADER_ID = 0;
+	private static final int DIALOG_REQUEST = 0x00;
+	private static final int EXERCISE_LOADER_ID = 0x01;
 	
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
 		super.onCreate(savedInstanceState);
 		setHasOptionsMenu(true);
-		dbHelper = DatabaseHelper.getInstance(getActivity());
 	}
 	@Override
 	public void onActivityCreated(Bundle savedInstanceState) {
@@ -38,7 +36,7 @@ public class ExerciseFragment extends ListFragment implements LoaderCallbacks<Cu
 		
 		// Prepare the loader.  Either re-connect with an existing one,
 		// or start a new one.
-		getLoaderManager().initLoader(EXERCISE_LOADER_ID, null, this);
+		//getLoaderManager().initLoader(EXERCISE_LOADER_ID, null, this);
 		
 	}
 	
@@ -53,7 +51,7 @@ public class ExerciseFragment extends ListFragment implements LoaderCallbacks<Cu
 		super.onViewCreated(view, savedInstanceState);
 		
 		// populate the listview with the contents of the exercise database
-		Cursor cursor = dbHelper.getExercises();
+		Cursor cursor = DatabaseHelper.getInstance(getActivity()).getExercises();
 		
 		// The columns to be bound
 		String[] columns = new String[] {
@@ -90,7 +88,7 @@ public class ExerciseFragment extends ListFragment implements LoaderCallbacks<Cu
 		switch (item.getItemId()) {
 		case R.id.action_add_exercise:
 			NewExerciseDialogFragment dialog = new NewExerciseDialogFragment();
-			dialog.setTargetFragment(this, 1);
+			dialog.setTargetFragment(this, DIALOG_REQUEST);
 			dialog.show(getFragmentManager(), "NewExerciseTag");
 			break;
 		default:
@@ -99,21 +97,16 @@ public class ExerciseFragment extends ListFragment implements LoaderCallbacks<Cu
 		return true;
 	}
 	
-	public void onExerciseCreated(Exercise exercise) {
-		final Exercise e = exercise;
-		Runnable r = new Runnable() {
-			@Override
-			public void run() {
-				SQLiteDatabase db = dbHelper.getWritableDatabase();
-				ContentValues values = new ContentValues();
-				values.put(DatabaseHelper.COLUMN_EXERCISE_NAME, e.getName());
-				values.put(DatabaseHelper.COLUMN_EXERCISE_DESCRIPTION, e.getDescription());
-				values.put(DatabaseHelper.COLUMN_EXERCISE_TYPE, e.getType().name());
-				
-				db.insert(DatabaseHelper.TABLE_EXERCISES_NAME, null, values);
+	@Override
+	public void onActivityResult(int requestCode, int resultCode, Intent data) {
+		super.onActivityResult(requestCode, resultCode, data);
+		switch (requestCode) {
+		case DIALOG_REQUEST:
+			if (resultCode == Activity.RESULT_OK) {
+				cursorAdapter.changeCursor(DatabaseHelper.getInstance(getActivity()).getExercises());
 			}
-		};
-		r.run();
+			break;
+		}
 	}
 	
 	@Override

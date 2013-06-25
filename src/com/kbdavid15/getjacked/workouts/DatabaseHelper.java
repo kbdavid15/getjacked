@@ -91,7 +91,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 	
 	
 	private static DatabaseHelper mInstance;
-	private Context context;
 	
 	public static DatabaseHelper getInstance(Context context) {
 		if (mInstance == null)
@@ -100,7 +99,9 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 	}
 	private DatabaseHelper(Context context) {
 		super(context, DB_NAME, null, DB_VERSION);
-		this.context = context;
+	}
+	public static void closeDatabase() {
+		mInstance.close();
 	}
 	
 	@Override
@@ -141,6 +142,18 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 		
 		return getWritableDatabase().insert(
 				TABLE_WORKOUT_PROGRAM_NAME,
+				null,
+				values);
+	}
+	
+	public long insertExercise(Exercise exercise) {
+		ContentValues values = new ContentValues();
+		values.put(COLUMN_EXERCISE_NAME, exercise.getName());
+		values.put(COLUMN_EXERCISE_DESCRIPTION, exercise.getDescription());
+		values.put(COLUMN_EXERCISE_TYPE, exercise.getType().name());
+		
+		return getWritableDatabase().insert(
+				TABLE_EXERCISES_NAME,
 				null,
 				values);
 	}

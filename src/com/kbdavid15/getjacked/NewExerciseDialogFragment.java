@@ -1,15 +1,18 @@
 package com.kbdavid15.getjacked;
 
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnClickListener;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.RadioButton;
 
+import com.kbdavid15.getjacked.workouts.DatabaseHelper;
 import com.kbdavid15.getjacked.workouts.Exercise;
 import com.kbdavid15.getjacked.workouts.ExerciseType;
 
@@ -32,7 +35,9 @@ public class NewExerciseDialogFragment extends DialogFragment {
 			    String description = ((EditText)((AlertDialog)dialog).findViewById(R.id.editTextDescription)).getText().toString();
 			    
 			    Exercise exercise = new Exercise(type, name, description);
-			    ((ExerciseFragment)getTargetFragment()).onExerciseCreated(exercise);
+			    new AsyncInsertExercise().execute(exercise);
+			    // call on activityresult
+			    getTargetFragment().onActivityResult(getTargetRequestCode(), Activity.RESULT_OK, null);
 			}
 		});
 		builder.setNegativeButton(R.string.action_cancel, new OnClickListener() {
@@ -44,6 +49,22 @@ public class NewExerciseDialogFragment extends DialogFragment {
 		
 		return builder.create();
 	}
-	
 //TODO: Bring back the NewExercise Activity and have a section to add sets to the exercise.
+	
+	private class AsyncInsertExercise extends AsyncTask<Exercise, Integer, Integer> {
+
+		@Override
+		protected Integer doInBackground(Exercise... exercises) {
+			// inserts the programs into the database
+			int numberInserted = 0;
+			for (int i = 0; i < exercises.length; i++) {
+				long id = DatabaseHelper.getInstance(getActivity()).insertExercise(exercises[i]);
+				if (id >= 0) {
+					numberInserted++;
+				}	// else an error occurred
+			}
+			DatabaseHelper.closeDatabase();
+			return numberInserted;
+		}
+	}
 }
