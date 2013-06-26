@@ -1,5 +1,6 @@
 package com.kbdavid15.getjacked;
 
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.AlertDialog.Builder;
 import android.app.Dialog;
@@ -78,6 +79,12 @@ public class NewProgramDialogFragment extends DialogFragment {
 			}
 			DatabaseHelper.closeDatabase();
 			return numberInserted;
+		}
+		
+		@Override
+		protected void onPostExecute(Integer result) {
+			// call on activityresult
+		    getTargetFragment().onActivityResult(getTargetRequestCode(), Activity.RESULT_OK, null);
 		}
 	}
 }

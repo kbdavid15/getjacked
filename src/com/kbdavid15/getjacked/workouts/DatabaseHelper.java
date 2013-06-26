@@ -16,7 +16,7 @@ import android.util.Log;
  */	
 public class DatabaseHelper extends SQLiteOpenHelper {
 	private static final String DB_NAME = "jacked.db";
-	private static final int DB_VERSION = 4;
+	private static final int DB_VERSION = 5;
 	
 	/**
 	 * 
@@ -67,6 +67,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 	 * 
 	 */
 	public static final String TABLE_WORKOUTS_NAME = "workout";
+	public static final String COLUMN_WORKOUT_NAME = "name";
 	public static final String COLUMN_WORKOUT_DATE = "date";
 	/** The id of the WorkoutProgram each Workout corresponds to */
 	public static final String COLUMN_WORKOUTPROGRAM_ID = "program_id";
@@ -74,6 +75,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 	private static final String CREATE_WORKOUT_TABLE = 
 			"create table if not exists " + TABLE_WORKOUTS_NAME + "(" +
 					BaseColumns._ID + " integer primary key autoincrement, " +
+					COLUMN_WORKOUT_NAME + " text not null, " +
 					COLUMN_WORKOUT_DATE + " integer, " +
 					COLUMN_WORKOUTPROGRAM_ID + " integer not null);";
 	
@@ -135,7 +137,42 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 		
 		return cursor;
 	}
-	
+	public Cursor getPrograms() {
+		Cursor cursor = getReadableDatabase().query(
+				TABLE_WORKOUT_PROGRAM_NAME,
+				new String[] { BaseColumns._ID, COLUMN_PROGRAM_TITLE },
+				null, null, null, null, null);
+		
+		if (cursor != null)
+			cursor.moveToFirst();
+		
+		return cursor;
+	}
+	public Cursor getWorkouts(long programId) {
+		Cursor cursor = getReadableDatabase().query(
+				TABLE_WORKOUTS_NAME,
+				new String[] { BaseColumns._ID, COLUMN_WORKOUT_NAME, COLUMN_WORKOUT_DATE },
+				COLUMN_WORKOUTPROGRAM_ID + " = " + String.valueOf(programId),
+				null, null, null, null);
+		
+		if (cursor != null && cursor.getCount() > 0) {
+			cursor.moveToFirst();
+			return cursor;
+		} else {
+			return null;
+		}
+	}
+	public Cursor getWorkouts() {
+		Cursor cursor = getReadableDatabase().query(
+				TABLE_WORKOUTS_NAME,
+				new String[] { BaseColumns._ID, COLUMN_WORKOUT_NAME, COLUMN_WORKOUT_DATE },
+				null, null, null, null, null);
+		
+		if (cursor != null )
+			cursor.moveToFirst();
+		
+		return cursor;
+	}
 	public long insertProgram(WorkoutProgram program) {
 		ContentValues values = new ContentValues();
 		values.put(COLUMN_PROGRAM_TITLE, program.getTitle());
@@ -145,7 +182,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 				null,
 				values);
 	}
-	
 	public long insertExercise(Exercise exercise) {
 		ContentValues values = new ContentValues();
 		values.put(COLUMN_EXERCISE_NAME, exercise.getName());

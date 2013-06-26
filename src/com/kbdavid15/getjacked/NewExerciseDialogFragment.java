@@ -36,8 +36,6 @@ public class NewExerciseDialogFragment extends DialogFragment {
 			    
 			    Exercise exercise = new Exercise(type, name, description);
 			    new AsyncInsertExercise().execute(exercise);
-			    // call on activityresult
-			    getTargetFragment().onActivityResult(getTargetRequestCode(), Activity.RESULT_OK, null);
 			}
 		});
 		builder.setNegativeButton(R.string.action_cancel, new OnClickListener() {
@@ -65,6 +63,11 @@ public class NewExerciseDialogFragment extends DialogFragment {
 			}
 			DatabaseHelper.closeDatabase();
 			return numberInserted;
+		}
+		@Override
+		protected void onPostExecute(Integer result) {
+			// call on activityresult
+		    getTargetFragment().onActivityResult(getTargetRequestCode(), Activity.RESULT_OK, null);
 		}
 	}
 }

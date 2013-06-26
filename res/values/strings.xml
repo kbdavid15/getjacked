@@ -8,6 +8,7 @@
     <string name="action_ok">OK</string>
     <string name="hello_world">Hello world!</string>
     <string name="select">Select</string>
+    <string name="loading">Loading</string>
 
     <string-array name="drawer_titles">
         <item>Programs</item>

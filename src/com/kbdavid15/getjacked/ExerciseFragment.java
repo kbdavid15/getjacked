@@ -43,7 +43,7 @@ public class ExerciseFragment extends ListFragment implements LoaderCallbacks<Cu
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
-		return inflater.inflate(R.layout.exercises, container, false);
+		return inflater.inflate(R.layout.list_fragment_layout, container, false);
 	}
 	
 	@Override
