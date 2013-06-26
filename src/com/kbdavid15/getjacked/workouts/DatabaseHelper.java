@@ -193,4 +193,14 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 				null,
 				values);
 	}
+	public long insertWorkout(Workout workout) {
+		ContentValues values = new ContentValues();
+		values.put(COLUMN_WORKOUT_NAME, workout.getTitle());
+		values.put(COLUMN_WORKOUTPROGRAM_ID, workout.getProgramId());
+		
+		return getWritableDatabase().insert(
+				TABLE_WORKOUTS_NAME,
+				null,
+				values);
+	}
 }

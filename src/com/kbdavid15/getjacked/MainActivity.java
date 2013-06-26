@@ -211,4 +211,8 @@ public class MainActivity extends FragmentActivity {
 		mTitle = title;
 		getActionBar().setTitle(mTitle);
 	}
+	
+	public void switchFragment(Fragment fragment) {
+		//TODO
+	}
 }

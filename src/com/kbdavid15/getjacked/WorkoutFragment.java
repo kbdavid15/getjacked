@@ -2,6 +2,7 @@ package com.kbdavid15.getjacked;
 
 import com.kbdavid15.getjacked.workouts.DatabaseHelper;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
@@ -19,6 +20,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 public class WorkoutFragment extends ListFragment {
+	private static final int NEWWORKOUT_DIALOG_REQUEST = 0;
 	private long programId;
 	private Cursor mCursor;
 	private CursorAdapter cursorAdapter;
@@ -78,8 +80,9 @@ public class WorkoutFragment extends ListFragment {
 		switch (item.getItemId()) {
 		case R.id.action_add_workout:
 			// create a new workout dialog
-			
-			
+			NewWorkoutDialogFragment dialog = new NewWorkoutDialogFragment();
+			dialog.setTargetFragment(this, NEWWORKOUT_DIALOG_REQUEST);
+			dialog.show(getFragmentManager(), "NewWorkoutTag");
 			return true;
 		default:
 			return super.onOptionsItemSelected(item);
@@ -87,13 +90,25 @@ public class WorkoutFragment extends ListFragment {
 	}
 	@Override
 	public void onActivityResult(int requestCode, int resultCode, Intent data) {
-		// TODO Auto-generated method stub
 		super.onActivityResult(requestCode, resultCode, data);
+		switch (requestCode) {
+		case NEWWORKOUT_DIALOG_REQUEST:
+			if (resultCode == Activity.RESULT_OK) {
+				cursorAdapter.changeCursor(DatabaseHelper.getInstance(getActivity()).getWorkouts(programId));
+			}
+			break;
+		}
 	}
 	
 	@Override
 	public void onListItemClick(ListView l, View v, int position, long id) {
 		// TODO Auto-generated method stub
 		super.onListItemClick(l, v, position, id);
+	}
+	public long getProgramId() {
+		return programId;
+	}
+	public void setProgramId(long programId) {
+		this.programId = programId;
 	}
 }

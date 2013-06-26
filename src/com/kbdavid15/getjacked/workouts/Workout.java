@@ -12,6 +12,7 @@ public class Workout {
 	private String title;
 	private ArrayList<Exercise> exercises;
 	private Date workoutDate;
+	private long programId;
 	
 	public Workout(String title, ArrayList<Exercise> exercises) {
 		this.title = title;
@@ -39,5 +40,11 @@ public class Workout {
 	}
 	public void setWorkoutDate(Date workoutDate) {
 		this.workoutDate = workoutDate;
+	}
+	public long getProgramId() {
+		return programId;
+	}
+	public void setProgramId(long programId) {
+		this.programId = programId;
 	}
 }
