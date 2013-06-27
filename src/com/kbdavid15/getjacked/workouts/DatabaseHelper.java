@@ -137,6 +137,35 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 		
 		return cursor;
 	}
+	public Cursor getExercises(long workoutId) {
+		Cursor cursor = getReadableDatabase().query(
+				TABLE_EXERCISES_NAME,
+				new String[] { BaseColumns._ID, COLUMN_EXERCISE_NAME, COLUMN_EXERCISE_DESCRIPTION, COLUMN_EXERCISE_TYPE },
+				COLUMN_WORKOUT_ID + " = " + String.valueOf(workoutId),
+				null, null, null, null);
+				
+		if (cursor != null && cursor.getCount() > 0) {
+			cursor.moveToFirst();
+			return cursor;
+		} else {
+			return null;
+		}
+	}
+	public Cursor getSets() {
+		Cursor cursor = getReadableDatabase().query(
+				TABLE_SETS_NAME,
+				new String[] { BaseColumns._ID, COLUMN_TARGET_REPS, COLUMN_TARGET_WEIGHT, COLUMN_TARGET_DURATION, COLUMN_REPS, COLUMN_WEIGHT, COLUMN_DURATION },
+				null, null, null, null, null);
+		
+		if (cursor != null)
+			cursor.moveToFirst();
+		
+		return cursor;
+	}
+	public Cursor getSets(long exerciseId) {
+		//TODO: implement this method
+		throw new UnsupportedOperationException("Not implemented yet");
+	}
 	public Cursor getPrograms() {
 		Cursor cursor = getReadableDatabase().query(
 				TABLE_WORKOUT_PROGRAM_NAME,
