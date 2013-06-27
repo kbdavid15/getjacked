@@ -23,10 +23,18 @@ public class MainActivity extends FragmentActivity {
 	private ActionBarDrawerToggle mDrawerToggle;
 	private CharSequence mDrawerTitle = "Get Jacked";
 	private CharSequence mTitle;
+	private static int mLastSelection;
+	public static final int WORKOUT_PROGRAM_POSITION = 0;
+	public static final int WORKOUT_POSITION = 1;
+	public static final int EXERCISE_POSITION = 2;
+	public static final int PROGRESS_POSITION = 3;
+	public static final int CALENDAR_POSITION = 4;
+	public static final int SETTINGS_POSITION = 5;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+
 		setContentView(R.layout.activity_main);
 
 		mDrawerTitles = getResources().getStringArray(R.array.drawer_titles);
@@ -34,7 +42,10 @@ public class MainActivity extends FragmentActivity {
 		mDrawerLayout = (DrawerLayout)findViewById(R.id.drawer_layout);
 
 		// Set the adapter for the list view
-		mDrawerList.setAdapter(new ArrayAdapter<String>(this, R.layout.drawer_list_item, R.id.drawer_item_text, mDrawerTitles));
+		mDrawerList.setAdapter(new ArrayAdapter<String>(
+				this,
+				R.layout.drawer_list_item,
+				R.id.drawer_item_text, mDrawerTitles));
 		// Set the list's click listener
 		mDrawerList.setOnItemClickListener(new DrawerItemClickListener());
 
@@ -66,52 +77,20 @@ public class MainActivity extends FragmentActivity {
 
 		getActionBar().setDisplayHomeAsUpEnabled(true);
 
-		// load the programs fragment as the default view
-		setTitle(mDrawerTitles[0]);
-		Fragment fragment = new WorkoutProgramFragment();
-		getSupportFragmentManager().beginTransaction().replace(R.id.content_frame, fragment).commit();
+		// if there is a savedInstance state, restore it
+		if (mLastSelection >= 0) {
+			selectItem(mLastSelection);
+		} else if (savedInstanceState != null && 
+				savedInstanceState.containsKey("currentPosition")) {
+			int currentPosition = savedInstanceState.getInt("currentPosition");
+			selectItem(currentPosition);
+		} else {
+			// load the programs fragment as the default view
+			setTitle(mDrawerTitles[0]);
+			Fragment fragment = new WorkoutProgramFragment();
+			getSupportFragmentManager().beginTransaction().replace(R.id.content_frame, fragment).commit();
+		}
 	}
-
-	/* Called whenever we call invalidateOptionsMenu() */
-//	@Override
-//	public boolean onPrepareOptionsMenu(Menu menu) {
-//		// If the nav drawer is open, hide action items related to the content view
-//		boolean drawerOpen = mDrawerLayout.isDrawerOpen(mDrawerList);
-//		if (drawerOpen) {
-//			mNewWorkoutMenuItem.setVisible(false);
-//			mNewExerciseMenuItem.setVisible(false);
-//		} else {
-//			//TODO have each fragment manage menu items independently
-//			switch (mDrawerList.getCheckedItemPosition()) {
-//			case 0:
-//				// Workout plans
-//				
-//			case 1:
-//				// workout
-//				mNewExerciseMenuItem.setVisible(false);
-//				mNewWorkoutMenuItem.setVisible(true);
-//				break;
-//			case 2:
-//				// Exercises
-//				mNewWorkoutMenuItem.setVisible(false);
-//				mNewExerciseMenuItem.setVisible(true);
-//				break;
-//			case 3:
-//				// progress
-//				mNewWorkoutMenuItem.setVisible(false);
-//				mNewExerciseMenuItem.setVisible(false);
-//				break;
-//			case 4:
-//				// calendar
-//				break;
-//			case 5:
-//				// settings
-//				break;
-//			}
-//		}
-//		
-//		return super.onPrepareOptionsMenu(menu);
-//	}
 
 	@Override
 	protected void onPostCreate(Bundle savedInstanceState) {
@@ -130,11 +109,7 @@ public class MainActivity extends FragmentActivity {
 	public boolean onCreateOptionsMenu(Menu menu) {
 		// Inflate the menu; this adds items to the action bar if it is present.
 		getMenuInflater().inflate(R.menu.main, menu);
-		
-//		// get handles on the menu items
-//		mNewExerciseMenuItem = menu.findItem(R.id.action_add_exercise);
-//		mNewWorkoutMenuItem = menu.findItem(R.id.action_add_workout);
-		
+
 		return true;
 	}
 
@@ -147,15 +122,6 @@ public class MainActivity extends FragmentActivity {
 		}
 		// handle item selection
 		switch (item.getItemId()) {
-//		case R.id.action_add_workout:
-//			startActivity(new Intent(this, NewWorkoutActivity.class));
-//			return true;
-//		case R.id.action_add_exercise:
-//			//startActivity(new Intent(this, NewExerciseActivity.class));
-//			NewExerciseDialogFragment dialog = new NewExerciseDialogFragment();
-//			dialog.show(getSupportFragmentManager(), "NewExerciseTag");
-//			
-//			return true;
 		default:
 			return super.onOptionsItemSelected(item);
 		}
@@ -165,34 +131,38 @@ public class MainActivity extends FragmentActivity {
 
 		@Override
 		public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-			selectItem(position);
+			// check if settings was clicked (last item in list)
+			if (position == SETTINGS_POSITION) {
+				// start the settings activity
+				startActivity(new Intent(MainActivity.this, SettingsActivity.class));
+			} else {
+				selectItem(position);
+			}
 		}
 	}
 
 	/** Swaps fragments in the main content view */
 	private void selectItem(int position) {
+		// save the last selected item
+		mLastSelection = mDrawerList.getCheckedItemPosition();
 		// Create a new fragment
 		Fragment fragment;
 		switch (position) {
-		case 0:
+		case WORKOUT_PROGRAM_POSITION:
 			fragment = new WorkoutProgramFragment();
 			break;
-		case 1:
+		case WORKOUT_POSITION:
 			fragment = new WorkoutFragment();
 			break;
-		case 2:
+		case EXERCISE_POSITION:
 			fragment = new ExerciseFragment();
 			break;
-		case 3:
+		case PROGRESS_POSITION:
 			fragment = new ProgressFragment();
 			break;
-		case 4:
+		case CALENDAR_POSITION:
 			fragment = new CalendarFragment();
 			break;
-		case 5:
-			// start the settings activity
-			startActivity(new Intent(this, SettingsActivity.class));
-			return;
 		default:
 			return;
 		}
@@ -211,8 +181,15 @@ public class MainActivity extends FragmentActivity {
 		mTitle = title;
 		getActionBar().setTitle(mTitle);
 	}
-	
-	public void switchFragment(Fragment fragment) {
-		//TODO
+	public void switchFragment(Fragment fragment, int position) {
+		getSupportFragmentManager().beginTransaction().replace(
+				R.id.content_frame, fragment).commit();
+		mDrawerList.setItemChecked(position, true);
+		setTitle(mDrawerTitles[position]);
+	}
+	@Override
+	protected void onSaveInstanceState(Bundle outState) {
+		super.onSaveInstanceState(outState);
+		outState.putInt("currentPosition", mLastSelection);
 	}
 }

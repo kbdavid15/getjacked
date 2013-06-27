@@ -173,6 +173,12 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 		
 		return cursor;
 	}
+	public Cursor getWorkouts(boolean unique) {
+		if (unique) {
+			
+		}
+		return null;
+	}
 	public long insertProgram(WorkoutProgram program) {
 		ContentValues values = new ContentValues();
 		values.put(COLUMN_PROGRAM_TITLE, program.getTitle());

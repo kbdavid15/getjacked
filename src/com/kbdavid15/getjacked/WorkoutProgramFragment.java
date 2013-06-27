@@ -94,7 +94,7 @@ public class WorkoutProgramFragment extends ListFragment {
 		Bundle bundle = new Bundle();
 		bundle.putLong(PROGRAM_CURSOR_ID, cursor.getLong(0));
 		workout.setArguments(bundle);
-		getFragmentManager().beginTransaction().replace(R.id.content_frame, workout).commit();
+		((MainActivity)getActivity()).switchFragment(workout, MainActivity.WORKOUT_POSITION);
 	}
 	
 	@Override
