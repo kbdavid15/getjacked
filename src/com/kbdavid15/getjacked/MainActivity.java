@@ -7,6 +7,7 @@ import android.support.v4.app.ActionBarDrawerToggle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v4.widget.DrawerLayout;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -145,35 +146,26 @@ public class MainActivity extends FragmentActivity {
 	private void selectItem(int position) {
 		// save the last selected item
 		mLastSelection = mDrawerList.getCheckedItemPosition();
-		// Create a new fragment
-		Fragment fragment;
 		switch (position) {
 		case WORKOUT_PROGRAM_POSITION:
-			fragment = new WorkoutProgramFragment();
+			switchFragment(new WorkoutProgramFragment(), "WorkoutProgram", position);
 			break;
 		case WORKOUT_POSITION:
-			fragment = new WorkoutFragment();
+			switchFragment(new WorkoutFragment(), "Workout", position);
 			break;
 		case EXERCISE_POSITION:
-			fragment = new ExerciseFragment();
+			switchFragment(new ExerciseFragment(), "Exercise", position);
 			break;
 		case PROGRESS_POSITION:
-			fragment = new ProgressFragment();
+			switchFragment(new ProgressFragment(), "Progress", position);
 			break;
 		case CALENDAR_POSITION:
-			fragment = new CalendarFragment();
+			switchFragment(new CalendarFragment(), "Calendar", position);
 			break;
 		default:
 			return;
 		}
-
-		// Insert the fragment by replacing any existing fragment
-		FragmentManager fragmentManager = getSupportFragmentManager();
-		fragmentManager.beginTransaction().replace(R.id.content_frame, fragment).commit();
-
-		// Highlight the selected item, update the title, and close the drawer
-		mDrawerList.setItemChecked(position, true);
-		setTitle(mDrawerTitles[position]);
+		
 		mDrawerLayout.closeDrawer(mDrawerList);
 	}
 	@Override
@@ -181,11 +173,22 @@ public class MainActivity extends FragmentActivity {
 		mTitle = title;
 		getActionBar().setTitle(mTitle);
 	}
-	public void switchFragment(Fragment fragment, int position) {
-		getSupportFragmentManager().beginTransaction().replace(
-				R.id.content_frame, fragment).commit();
+	public void switchFragment(Fragment fragment, String tag, int position) {
+		getSupportFragmentManager()
+			.beginTransaction()
+			.replace(R.id.content_frame, fragment, tag)
+			.addToBackStack(null)
+			.commit();
+		
 		mDrawerList.setItemChecked(position, true);
 		setTitle(mDrawerTitles[position]);
+	}
+	@Override
+	public void onBackPressed() {
+		super.onBackPressed();
+		Fragment f = getSupportFragmentManager().findFragmentById(R.id.content_frame);
+		if (f != null)
+			setTitle(mDrawerTitles[((IFragmentPosition)f).getFragmentPosition()]);
 	}
 	@Override
 	protected void onSaveInstanceState(Bundle outState) {

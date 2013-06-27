@@ -18,8 +18,10 @@ import android.widget.ListView;
 
 import com.kbdavid15.getjacked.workouts.DatabaseHelper;
 
-public class ExerciseFragment extends ListFragment implements LoaderCallbacks<Cursor> {
+public class ExerciseFragment extends ListFragment implements LoaderCallbacks<Cursor>, IFragmentPosition {
 	private SimpleCursorAdapter cursorAdapter;
+	private long workoutId;
+	private Cursor mCursor;
 	
 	private static final int DIALOG_REQUEST = 0x00;
 	private static final int EXERCISE_LOADER_ID = 0x01;
@@ -130,5 +132,9 @@ public class ExerciseFragment extends ListFragment implements LoaderCallbacks<Cu
 	public void onLoaderReset(Loader<Cursor> arg0) {
 		// TODO Auto-generated method stub
 		
+	}
+	@Override
+	public int getFragmentPosition() {
+		return MainActivity.EXERCISE_POSITION;
 	}
 }

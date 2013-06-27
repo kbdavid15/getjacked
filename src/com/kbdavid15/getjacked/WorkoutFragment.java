@@ -6,6 +6,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
 import android.support.v4.app.ListFragment;
 import android.support.v4.widget.CursorAdapter;
 import android.support.v4.widget.SimpleCursorAdapter;
@@ -19,8 +20,9 @@ import android.view.ViewGroup;
 import android.widget.ListView;
 import android.widget.TextView;
 
-public class WorkoutFragment extends ListFragment {
+public class WorkoutFragment extends ListFragment implements IFragmentPosition {
 	private static final int NEWWORKOUT_DIALOG_REQUEST = 0;
+	private static final String WORKOUT_ID = "workout_id";
 	private long programId;
 	private Cursor mCursor;
 	private CursorAdapter cursorAdapter;
@@ -78,12 +80,15 @@ public class WorkoutFragment extends ListFragment {
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 		switch (item.getItemId()) {
-		case R.id.action_add_workout:
+		case R.id.action_new_workout:
 			// create a new workout dialog
 			NewWorkoutDialogFragment dialog = new NewWorkoutDialogFragment();
 			dialog.setTargetFragment(this, NEWWORKOUT_DIALOG_REQUEST);
 			dialog.show(getFragmentManager(), "NewWorkoutTag");
 			return true;
+		case R.id.action_add_existing_workout:
+			//TODO: show a dialog populated with a list of workouts
+			
 		default:
 			return super.onOptionsItemSelected(item);
 		}
@@ -102,13 +107,23 @@ public class WorkoutFragment extends ListFragment {
 	
 	@Override
 	public void onListItemClick(ListView l, View v, int position, long id) {
-		// TODO Auto-generated method stub
-		super.onListItemClick(l, v, position, id);
+		// get the Cursor to the selected workout
+		Cursor cursor = (Cursor)l.getItemAtPosition(position);
+		// start the ExerciseFragment, passing it the id of the selected workout
+		Fragment exerciseFragment = new ExerciseFragment();
+		Bundle bundle = new Bundle();
+		bundle.putLong(WORKOUT_ID, cursor.getLong(0));
+		exerciseFragment.setArguments(bundle);
+		((MainActivity)getActivity()).switchFragment(exerciseFragment, "Exercise", MainActivity.EXERCISE_POSITION);
 	}
 	public long getProgramId() {
 		return programId;
 	}
 	public void setProgramId(long programId) {
 		this.programId = programId;
+	}
+	@Override
+	public int getFragmentPosition() {
+		return MainActivity.WORKOUT_POSITION;
 	}
 }

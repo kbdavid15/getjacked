@@ -17,7 +17,7 @@ import android.widget.ListView;
 
 import com.kbdavid15.getjacked.workouts.DatabaseHelper;
 
-public class WorkoutProgramFragment extends ListFragment {
+public class WorkoutProgramFragment extends ListFragment implements IFragmentPosition {
 	private static final int NEWPROGRAM_DIALOG_REQUEST = 0x00;
 	public static final String PROGRAM_CURSOR_ID = "program_cursor_id";
 	
@@ -94,7 +94,7 @@ public class WorkoutProgramFragment extends ListFragment {
 		Bundle bundle = new Bundle();
 		bundle.putLong(PROGRAM_CURSOR_ID, cursor.getLong(0));
 		workout.setArguments(bundle);
-		((MainActivity)getActivity()).switchFragment(workout, MainActivity.WORKOUT_POSITION);
+		((MainActivity)getActivity()).switchFragment(workout, "Workout", MainActivity.WORKOUT_POSITION);
 	}
 	
 	@Override
@@ -107,5 +107,9 @@ public class WorkoutProgramFragment extends ListFragment {
 			}
 			break;
 		}
+	}
+	@Override
+	public int getFragmentPosition() {
+		return MainActivity.WORKOUT_PROGRAM_POSITION;
 	}
 }

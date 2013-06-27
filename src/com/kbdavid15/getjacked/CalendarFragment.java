@@ -6,7 +6,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-public class CalendarFragment extends Fragment {
+public class CalendarFragment extends Fragment implements IFragmentPosition {
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
@@ -18,5 +18,10 @@ public class CalendarFragment extends Fragment {
 	public void onViewCreated(View view, Bundle savedInstanceState) {
 		super.onViewCreated(view, savedInstanceState);
 		
+	}
+
+	@Override
+	public int getFragmentPosition() {
+		return MainActivity.CALENDAR_POSITION;
 	}
 }
