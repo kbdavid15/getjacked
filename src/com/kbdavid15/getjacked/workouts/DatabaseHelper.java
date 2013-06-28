@@ -154,7 +154,13 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 	public Cursor getSets() {
 		Cursor cursor = getReadableDatabase().query(
 				TABLE_SETS_NAME,
-				new String[] { BaseColumns._ID, COLUMN_TARGET_REPS, COLUMN_TARGET_WEIGHT, COLUMN_TARGET_DURATION, COLUMN_REPS, COLUMN_WEIGHT, COLUMN_DURATION },
+				new String[] { BaseColumns._ID,
+						COLUMN_TARGET_REPS,
+						COLUMN_TARGET_WEIGHT,
+						COLUMN_TARGET_DURATION,
+						COLUMN_REPS,
+						COLUMN_WEIGHT,
+						COLUMN_DURATION },
 				null, null, null, null, null);
 		
 		if (cursor != null)
@@ -222,6 +228,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 		values.put(COLUMN_EXERCISE_NAME, exercise.getName());
 		values.put(COLUMN_EXERCISE_DESCRIPTION, exercise.getDescription());
 		values.put(COLUMN_EXERCISE_TYPE, exercise.getType().name());
+		values.put(COLUMN_WORKOUT_ID, exercise.getWorkoutId());
 		
 		return getWritableDatabase().insert(
 				TABLE_EXERCISES_NAME,

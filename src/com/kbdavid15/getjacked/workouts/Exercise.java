@@ -7,6 +7,7 @@ public class Exercise {
 	private ArrayList<ExerciseSet> setList;
 	private ExerciseType type;
 	private String description;
+	private long workoutId;
 
 	public Exercise(ExerciseType type, String name, ArrayList<ExerciseSet> sets) {
 		this.name = name;
@@ -46,5 +47,11 @@ public class Exercise {
 	}
 	public void setDescription(String description) {
 		this.description = description;
+	}
+	public long getWorkoutId() {
+		return workoutId;
+	}
+	public void setWorkoutId(long workoutId) {
+		this.workoutId = workoutId;
 	}
 }

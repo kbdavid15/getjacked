@@ -52,6 +52,23 @@
             android:enabled="true"
             android:exported="false" >
         </provider>
+
+        <activity
+            android:name="com.kbdavid15.getjacked.ExerciseListActivity"
+            android:label="@string/title_exercise_list"
+            android:parentActivityName="com.kbdavid15.getjacked.MainActivity" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.kbdavid15.getjacked.MainActivity" />
+        </activity>
+        <activity
+            android:name="com.kbdavid15.getjacked.ExerciseDetailActivity"
+            android:label="@string/title_exercise_detail"
+            android:parentActivityName=".ExerciseListActivity" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".ExerciseListActivity" />
+        </activity>
     </application>
 
 </manifest>

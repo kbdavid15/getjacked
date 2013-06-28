@@ -1,5 +1,8 @@
 package com.kbdavid15.getjacked;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
@@ -21,7 +24,7 @@ public class NewExerciseDialogFragment extends DialogFragment {
 	@Override
 	public Dialog onCreateDialog(Bundle savedInstanceState) {
 		// inflate the view for the dialog
-		View view = getActivity().getLayoutInflater().inflate(R.layout.activity_new_exercise, null);
+		View view = getActivity().getLayoutInflater().inflate(R.layout.dialog_new_exercise, null);
 		AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
 		builder.setTitle(R.string.title_activity_new_exercise);
 		builder.setView(view);
@@ -34,7 +37,12 @@ public class NewExerciseDialogFragment extends DialogFragment {
 			    String name = ((EditText)((AlertDialog)dialog).findViewById(R.id.editTextExerciseName)).getText().toString();
 			    String description = ((EditText)((AlertDialog)dialog).findViewById(R.id.editTextDescription)).getText().toString();
 			    
+			    long id = ((ExerciseFragment)getTargetFragment()).getWorkoutId();			    
+			    
 			    Exercise exercise = new Exercise(type, name, description);
+			    exercise.setWorkoutId(id);
+			    
+			    // insert the exercise into the database asynchronously
 			    new AsyncInsertExercise().execute(exercise);
 			}
 		});
@@ -49,23 +57,21 @@ public class NewExerciseDialogFragment extends DialogFragment {
 	}
 //TODO: Bring back the NewExercise Activity and have a section to add sets to the exercise.
 	
-	private class AsyncInsertExercise extends AsyncTask<Exercise, Integer, Integer> {
+	private class AsyncInsertExercise extends AsyncTask<Exercise, Integer, List<Long>> {
 
 		@Override
-		protected Integer doInBackground(Exercise... exercises) {
+		protected List<Long> doInBackground(Exercise... exercises) {
 			// inserts the programs into the database
-			int numberInserted = 0;
+			ArrayList<Long> exerciseIDs = new ArrayList<Long>();
 			for (int i = 0; i < exercises.length; i++) {
 				long id = DatabaseHelper.getInstance(getActivity()).insertExercise(exercises[i]);
-				if (id >= 0) {
-					numberInserted++;
-				}	// else an error occurred
+				exerciseIDs.add(id);
 			}
 			DatabaseHelper.closeDatabase();
-			return numberInserted;
+			return exerciseIDs;
 		}
 		@Override
-		protected void onPostExecute(Integer result) {
+		protected void onPostExecute(List<Long> result) {
 			// call on activityresult
 		    getTargetFragment().onActivityResult(getTargetRequestCode(), Activity.RESULT_OK, null);
 		}

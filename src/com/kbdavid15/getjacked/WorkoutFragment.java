@@ -1,7 +1,5 @@
 package com.kbdavid15.getjacked;
 
-import com.kbdavid15.getjacked.workouts.DatabaseHelper;
-
 import android.app.Activity;
 import android.content.Intent;
 import android.database.Cursor;
@@ -14,18 +12,20 @@ import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
-import android.view.TextureView;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.kbdavid15.getjacked.workouts.DatabaseHelper;
+
 public class WorkoutFragment extends ListFragment implements IFragmentPosition {
 	private static final int NEWWORKOUT_DIALOG_REQUEST = 0;
-	private static final String WORKOUT_ID = "workout_id";
+	public static final String WORKOUT_ID = "workout_id";
 	private long programId;
 	private Cursor mCursor;
 	private CursorAdapter cursorAdapter;
+	private TextView emptyText;
 	
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -35,7 +35,7 @@ public class WorkoutFragment extends ListFragment implements IFragmentPosition {
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
-		return inflater.inflate(R.layout.workout, container, false);
+		return inflater.inflate(R.layout.workout_fragment, container, false);
 	}
 	
 	@Override
@@ -54,6 +54,8 @@ public class WorkoutFragment extends ListFragment implements IFragmentPosition {
 		// check if cursor is null
 		if (mCursor == null) {
 			setEmptyText("Please add or create a workout");
+		} else {
+			setEmptyText(null);
 		}
 		
 		cursorAdapter = new SimpleCursorAdapter(
@@ -68,7 +70,14 @@ public class WorkoutFragment extends ListFragment implements IFragmentPosition {
 	
 	@Override
 	public void setEmptyText(CharSequence text) {
-		((TextView)getView().findViewById(R.id.empty)).setText(text);
+		if (emptyText == null) {
+			emptyText = (TextView)getView().findViewById(R.id.empty);
+		}		
+		if (text != null) {
+			emptyText.setText(text);
+		} else {
+			emptyText.setText("");
+		}
 	}
 	
 	@Override

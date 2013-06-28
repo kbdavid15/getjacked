@@ -52,8 +52,15 @@ public class ExerciseFragment extends ListFragment implements LoaderCallbacks<Cu
 	public void onViewCreated(View view, Bundle savedInstanceState) {
 		super.onViewCreated(view, savedInstanceState);
 		
-		// populate the listview with the contents of the exercise database
-		Cursor cursor = DatabaseHelper.getInstance(getActivity()).getExercises();
+		// determine whether to display exercises for a specific workout
+		Bundle b = getArguments();
+		if (b == null) {
+			// populate the listview with the contents of the exercise database
+			mCursor = DatabaseHelper.getInstance(getActivity()).getExercises();
+		} else {
+			workoutId = b.getLong(WorkoutFragment.WORKOUT_ID);
+			mCursor = DatabaseHelper.getInstance(getActivity()).getExercises(workoutId);
+		}
 		
 		// The columns to be bound
 		String[] columns = new String[] {
@@ -72,7 +79,7 @@ public class ExerciseFragment extends ListFragment implements LoaderCallbacks<Cu
 		cursorAdapter = new SimpleCursorAdapter(
 				getActivity(),
 				R.layout.exercise_listitem,
-				cursor,
+				mCursor,
 				columns,
 				to);
 		
@@ -88,11 +95,13 @@ public class ExerciseFragment extends ListFragment implements LoaderCallbacks<Cu
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 		switch (item.getItemId()) {
-		case R.id.action_add_exercise:
+		case R.id.action_new_exercise:
 			NewExerciseDialogFragment dialog = new NewExerciseDialogFragment();
 			dialog.setTargetFragment(this, DIALOG_REQUEST);
 			dialog.show(getFragmentManager(), "NewExerciseTag");
 			break;
+		case R.id.action_add_existing_exercise:
+			//TODO: show a dialog populated with list of exercises
 		default:
 			return super.onOptionsItemSelected(item);
 		}
@@ -105,7 +114,7 @@ public class ExerciseFragment extends ListFragment implements LoaderCallbacks<Cu
 		switch (requestCode) {
 		case DIALOG_REQUEST:
 			if (resultCode == Activity.RESULT_OK) {
-				cursorAdapter.changeCursor(DatabaseHelper.getInstance(getActivity()).getExercises());
+				cursorAdapter.changeCursor(DatabaseHelper.getInstance(getActivity()).getExercises(workoutId));
 			}
 			break;
 		}
@@ -136,5 +145,11 @@ public class ExerciseFragment extends ListFragment implements LoaderCallbacks<Cu
 	@Override
 	public int getFragmentPosition() {
 		return MainActivity.EXERCISE_POSITION;
+	}
+	public long getWorkoutId() {
+		return workoutId;
+	}
+	public void setWorkoutId(long workoutId) {
+		this.workoutId = workoutId;
 	}
 }
