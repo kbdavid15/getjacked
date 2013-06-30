@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.support.v4.app.ActionBarDrawerToggle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v4.widget.DrawerLayout;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -146,19 +147,19 @@ public class MainActivity extends FragmentActivity {
 		mLastSelection = mDrawerList.getCheckedItemPosition();
 		switch (position) {
 		case WORKOUT_PROGRAM_POSITION:
-			switchFragment(new WorkoutProgramFragment(), "WorkoutProgram", position);
+			switchFragment(new WorkoutProgramFragment(), "WorkoutProgram", position, false);
 			break;
 		case WORKOUT_POSITION:
-			switchFragment(new WorkoutFragment(), "Workout", position);
+			switchFragment(new WorkoutFragment(), "Workout", position, false);
 			break;
 		case EXERCISE_POSITION:
-			switchFragment(new ExerciseFragment(), "Exercise", position);
+			switchFragment(new ExerciseFragment(), "Exercise", position, false);
 			break;
 		case PROGRESS_POSITION:
-			switchFragment(new ProgressFragment(), "Progress", position);
+			switchFragment(new ProgressFragment(), "Progress", position, false);
 			break;
 		case CALENDAR_POSITION:
-			switchFragment(new CalendarFragment(), "Calendar", position);
+			switchFragment(new CalendarFragment(), "Calendar", position, false);
 			break;
 		default:
 			return;
@@ -171,12 +172,14 @@ public class MainActivity extends FragmentActivity {
 		mTitle = title;
 		getActionBar().setTitle(mTitle);
 	}
-	public void switchFragment(Fragment fragment, String tag, int position) {
-		getSupportFragmentManager()
+	public void switchFragment(Fragment fragment, String tag, int position, boolean addToStack) {
+		FragmentTransaction transaction = getSupportFragmentManager()
 			.beginTransaction()
-			.replace(R.id.content_frame, fragment, tag)
-			.addToBackStack(null)
-			.commit();
+			.replace(R.id.content_frame, fragment, tag);
+		if (addToStack)
+			transaction.addToBackStack(null);
+		
+		transaction.commit();
 		
 		mDrawerList.setItemChecked(position, true);
 		setTitle(mDrawerTitles[position]);

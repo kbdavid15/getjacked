@@ -210,7 +210,17 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 	}
 	public Cursor getWorkouts(boolean unique) {
 		if (unique) {
+			Cursor cursor = getReadableDatabase().query(
+					true,					// only distinct rows
+					TABLE_WORKOUTS_NAME,
+					new String[] {BaseColumns._ID, COLUMN_WORKOUT_NAME },
+					null,
+					null, null, null, null, null);
 			
+			if (cursor != null)
+				cursor.moveToFirst();
+			
+			return cursor;
 		}
 		return null;
 	}

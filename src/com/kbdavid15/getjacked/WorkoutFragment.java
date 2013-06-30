@@ -22,6 +22,7 @@ import com.kbdavid15.getjacked.workouts.DatabaseHelper;
 public class WorkoutFragment extends ListFragment implements IFragmentPosition {
 	private static final int NEWWORKOUT_DIALOG_REQUEST = 0;
 	public static final String WORKOUT_ID = "workout_id";
+	private static final int EXISTINGWORKOUT_DIALOG_REQUEST = 1;
 	private long programId;
 	private Cursor mCursor;
 	private CursorAdapter cursorAdapter;
@@ -97,7 +98,10 @@ public class WorkoutFragment extends ListFragment implements IFragmentPosition {
 			return true;
 		case R.id.action_add_existing_workout:
 			//TODO: show a dialog populated with a list of workouts
-			
+			ExistingWorkoutDialogFragment existingDialog = new ExistingWorkoutDialogFragment();
+			existingDialog.setTargetFragment(this, EXISTINGWORKOUT_DIALOG_REQUEST);
+			existingDialog.show(getFragmentManager(), "ExistingWorkoutTag");
+			return true;			
 		default:
 			return super.onOptionsItemSelected(item);
 		}
@@ -123,7 +127,7 @@ public class WorkoutFragment extends ListFragment implements IFragmentPosition {
 		Bundle bundle = new Bundle();
 		bundle.putLong(WORKOUT_ID, cursor.getLong(0));
 		exerciseFragment.setArguments(bundle);
-		((MainActivity)getActivity()).switchFragment(exerciseFragment, "Exercise", MainActivity.EXERCISE_POSITION);
+		((MainActivity)getActivity()).switchFragment(exerciseFragment, "Exercise", MainActivity.EXERCISE_POSITION, true);
 	}
 	public long getProgramId() {
 		return programId;

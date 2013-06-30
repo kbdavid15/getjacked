@@ -94,7 +94,7 @@ public class WorkoutProgramFragment extends ListFragment implements IFragmentPos
 		Bundle bundle = new Bundle();
 		bundle.putLong(PROGRAM_CURSOR_ID, cursor.getLong(0));
 		workout.setArguments(bundle);
-		((MainActivity)getActivity()).switchFragment(workout, "Workout", MainActivity.WORKOUT_POSITION);
+		((MainActivity)getActivity()).switchFragment(workout, "Workout", MainActivity.WORKOUT_POSITION, true);
 	}
 	
 	@Override
