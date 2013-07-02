@@ -255,4 +255,19 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 				null,
 				values);
 	}
+	public long insertSet(ExerciseSet set) {
+		ContentValues values = new ContentValues();
+		values.put(COLUMN_TARGET_REPS, set.getTargetReps());
+		values.put(COLUMN_TARGET_WEIGHT, set.getTargetWeight());
+		values.put(COLUMN_TARGET_DURATION, set.getTargetDuration().getTime());
+		values.put(COLUMN_REPS, set.getNumReps());
+		values.put(COLUMN_WEIGHT, set.getWeight());
+		values.put(COLUMN_DURATION, set.getDuration().getTime());
+		values.put(COLUMN_EXERCISE_ID, set.getExerciseId());
+		
+		return getWritableDatabase().insert(
+				TABLE_SETS_NAME,
+				null,
+				values);
+	}
 }
