@@ -1,13 +1,18 @@
 package com.kbdavid15.getjacked;
 
 import android.app.Activity;
+import android.content.Intent;
+import android.database.Cursor;
 import android.os.Bundle;
 import android.support.v4.app.ListFragment;
+import android.support.v4.widget.SimpleCursorAdapter;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import com.kbdavid15.getjacked.dummy.DummyContent;
+import com.kbdavid15.getjacked.workouts.DatabaseHelper;
 
 /**
  * A list fragment representing a list of Exercises. This fragment also supports
@@ -36,6 +41,10 @@ public class ExerciseListFragment extends ListFragment {
 	 * The current activated item position. Only used on tablets.
 	 */
 	private int mActivatedPosition = ListView.INVALID_POSITION;
+
+	private long workoutId;
+	private static final int DIALOG_REQUEST = 0x00;
+	private SimpleCursorAdapter cursorAdapter;
 
 	/**
 	 * A callback interface that all activities containing this fragment must
@@ -71,9 +80,33 @@ public class ExerciseListFragment extends ListFragment {
 		super.onCreate(savedInstanceState);
 
 		// TODO: replace with a real list adapter.
-		setListAdapter(new ArrayAdapter<DummyContent.DummyItem>(getActivity(),
-				android.R.layout.simple_list_item_activated_1,
-				android.R.id.text1, DummyContent.ITEMS));
+//		setListAdapter(new ArrayAdapter<DummyContent.DummyItem>(getActivity(),
+//				android.R.layout.simple_list_item_activated_1,
+//				android.R.id.text1, DummyContent.ITEMS));
+		
+		Cursor cursor = DatabaseHelper.getInstance(getActivity()).getExercises(getWorkoutId());
+		// The columns to be bound
+		String[] columns = new String[] {
+				DatabaseHelper.COLUMN_EXERCISE_NAME,
+				DatabaseHelper.COLUMN_EXERCISE_DESCRIPTION,
+				DatabaseHelper.COLUMN_EXERCISE_TYPE
+		};
+		
+		// the xml defined values the data will be bound to
+		int[] to = new int[] {
+				R.id.li_exerciseName,
+				R.id.li_exerciseDescription,
+				R.id.li_exerciseType
+		};
+		//TODO: use a loader - http://developer.android.com/guide/components/loaders.html
+		cursorAdapter = new SimpleCursorAdapter(
+				getActivity(),
+				R.layout.exercise_listitem,
+				cursor,
+				columns,
+				to);
+		
+		setListAdapter(cursorAdapter);
 	}
 
 	@Override
@@ -149,4 +182,28 @@ public class ExerciseListFragment extends ListFragment {
 
 		mActivatedPosition = position;
 	}
+	
+	@Override
+	public void onActivityResult(int requestCode, int resultCode, Intent data) {
+		super.onActivityResult(requestCode, resultCode, data);
+		switch (requestCode) {
+		case DIALOG_REQUEST:
+			if (resultCode == Activity.RESULT_OK) {
+				cursorAdapter.changeCursor(DatabaseHelper.getInstance(getActivity()).getExercises(getWorkoutId()));
+			}
+			break;
+		}
+	}
+
+	public void setWorkoutId(long workoutId) {
+		this.workoutId = workoutId;
+	}
+	public long getWorkoutId() {
+		if (workoutId == 0) {
+			workoutId = ((ExerciseListActivity)getActivity()).getIntent().getLongExtra(WorkoutFragment.WORKOUT_ID, 0);
+		}
+		return workoutId;
+	}
+	
+	
 }

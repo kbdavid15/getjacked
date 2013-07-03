@@ -36,8 +36,12 @@ public class NewExerciseDialogFragment extends DialogFragment {
 				ExerciseType type = strengthRb.isChecked() ? ExerciseType.EXERCISE_STRENGTH : ExerciseType.EXERCISE_AEROBIC;
 			    String name = ((EditText)((AlertDialog)dialog).findViewById(R.id.editTextExerciseName)).getText().toString();
 			    String description = ((EditText)((AlertDialog)dialog).findViewById(R.id.editTextDescription)).getText().toString();
-			    
-			    long id = ((ExerciseFragment)getTargetFragment()).getWorkoutId();			    
+			    long id;
+			    try {
+			    	id = ((ExerciseFragment)getTargetFragment()).getWorkoutId();
+			    } catch (ClassCastException e) {
+			    	id = ((ExerciseListFragment)getTargetFragment()).getWorkoutId();
+			    }
 			    
 			    Exercise exercise = new Exercise(type, name, description);
 			    exercise.setWorkoutId(id);
@@ -72,7 +76,7 @@ public class NewExerciseDialogFragment extends DialogFragment {
 		}
 		@Override
 		protected void onPostExecute(List<Long> result) {
-			// call on activityresult
+			// call onActivityResult
 		    getTargetFragment().onActivityResult(getTargetRequestCode(), Activity.RESULT_OK, null);
 		}
 	}

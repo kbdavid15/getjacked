@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.NavUtils;
+import android.view.Menu;
 import android.view.MenuItem;
 
 /**
@@ -30,6 +31,9 @@ public class ExerciseListActivity extends FragmentActivity implements
 	 * device.
 	 */
 	private boolean mTwoPane;
+	private static final int DIALOG_REQUEST = 0x00;
+	//private long workoutId;
+	private ExerciseListFragment exerciseListFragment;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -53,8 +57,14 @@ public class ExerciseListActivity extends FragmentActivity implements
 		}
 
 		// TODO: If exposing deep links into your app, handle intents here.
+		exerciseListFragment = ((ExerciseListFragment) getSupportFragmentManager()
+				.findFragmentById(R.id.exercise_list));
 	}
-
+	@Override
+	public boolean onCreateOptionsMenu(Menu menu) {
+		getMenuInflater().inflate(R.menu.exercise_menu, menu);
+		return super.onCreateOptionsMenu(menu);
+	}
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 		switch (item.getItemId()) {
@@ -68,6 +78,13 @@ public class ExerciseListActivity extends FragmentActivity implements
 			//
 			NavUtils.navigateUpFromSameTask(this);
 			return true;
+		case R.id.action_new_exercise:
+			NewExerciseDialogFragment dialog = new NewExerciseDialogFragment();
+			dialog.setTargetFragment(exerciseListFragment, DIALOG_REQUEST);
+			dialog.show(getSupportFragmentManager(), "NewExerciseTag");
+			break;
+		case R.id.action_add_existing_exercise:
+			//TODO: show a dialog populated with list of exercises
 		}
 		return super.onOptionsItemSelected(item);
 	}

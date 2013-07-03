@@ -4,7 +4,6 @@ import android.app.Activity;
 import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
 import android.support.v4.app.ListFragment;
 import android.support.v4.widget.CursorAdapter;
 import android.support.v4.widget.SimpleCursorAdapter;
@@ -122,12 +121,17 @@ public class WorkoutFragment extends ListFragment implements IFragmentPosition {
 	public void onListItemClick(ListView l, View v, int position, long id) {
 		// get the Cursor to the selected workout
 		Cursor cursor = (Cursor)l.getItemAtPosition(position);
-		// start the ExerciseFragment, passing it the id of the selected workout
-		Fragment exerciseFragment = new ExerciseFragment();
-		Bundle bundle = new Bundle();
-		bundle.putLong(WORKOUT_ID, cursor.getLong(0));
-		exerciseFragment.setArguments(bundle);
-		((MainActivity)getActivity()).switchFragment(exerciseFragment, "Exercise", MainActivity.EXERCISE_POSITION, true);
+//		// start the ExerciseFragment, passing it the id of the selected workout
+//		Fragment exerciseFragment = new ExerciseFragment();
+//		Bundle bundle = new Bundle();
+//		bundle.putLong(WORKOUT_ID, cursor.getLong(0));
+//		exerciseFragment.setArguments(bundle);
+//		((MainActivity)getActivity()).switchFragment(exerciseFragment, "Exercise", MainActivity.EXERCISE_POSITION, true);
+		
+		// start the ExerciseListActivity
+		Intent intent = new Intent(getActivity(), ExerciseListActivity.class);
+		intent.putExtra(WORKOUT_ID, cursor.getLong(0));
+		startActivity(intent);
 	}
 	public long getProgramId() {
 		return programId;
