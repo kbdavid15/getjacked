@@ -7,9 +7,7 @@ import android.os.Bundle;
 import android.support.v4.app.ListFragment;
 import android.support.v4.widget.SimpleCursorAdapter;
 import android.view.View;
-import android.widget.ArrayAdapter;
 import android.widget.ListView;
-import android.widget.Toast;
 
 import com.kbdavid15.getjacked.dummy.DummyContent;
 import com.kbdavid15.getjacked.workouts.DatabaseHelper;
