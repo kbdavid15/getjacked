@@ -18,9 +18,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 	private static final String DB_NAME = "jacked.db";
 	private static final int DB_VERSION = 5;
 	
-	/**
-	 * 
-	 */
 	public static final String TABLE_SETS_NAME = "sets";
 	/** The exercise that each set belongs to */
 	public static final String COLUMN_EXERCISE_ID = "exercise_id";
@@ -125,7 +122,10 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 		db.execSQL("DROP TABLE IF EXISTS " + TABLE_WORKOUT_PROGRAM_NAME);
 		onCreate(db);
 	}
-	
+	/**
+	 * Gets all of the {@link Exercise}s in the exercise table
+	 * @return	Cursor pointing to the first {@link Exercise} in the exercises table
+	 */
 	public Cursor getExercises() {
 		Cursor cursor = getReadableDatabase().query(
 				TABLE_EXERCISES_NAME,
@@ -137,6 +137,11 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 		
 		return cursor;
 	}
+	/**
+	 * Gets all of the {@link Exercise}s belonging to the {@link Workout}
+	 * @param workoutId	The _id of the {@link Workout}
+	 * @return Cursor pointing to the first {@link Exercise} in the {@link Workout}
+	 */
 	public Cursor getExercises(long workoutId) {
 		Cursor cursor = getReadableDatabase().query(
 				TABLE_EXERCISES_NAME,
@@ -151,6 +156,10 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 			return null;
 		}
 	}
+	/**
+	 * Gets all of the {@link ExerciseSet}s in the sets table
+	 * @return	Cursor pointing to the first {@link ExerciseSet} in the sets table
+	 */
 	public Cursor getSets() {
 		Cursor cursor = getReadableDatabase().query(
 				TABLE_SETS_NAME,
@@ -168,10 +177,19 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 		
 		return cursor;
 	}
+	/**
+	 * Gets all of the {@link ExerciseSet}s belonging to the {@link Exercise}
+	 * @param exerciseId	The _id of the {@link Exercise}
+	 * @return	Cursor pointing to the first {@link ExerciseSet} in the {@link Exercise}
+	 */
 	public Cursor getSets(long exerciseId) {
 		//TODO: implement this method
 		throw new UnsupportedOperationException("Not implemented yet");
 	}
+	/**
+	 * Gets all of the {@link WorkoutProgram}s in the workout_program table
+	 * @return	Cursor pointing to the first {@link WorkoutProgram}
+	 */
 	public Cursor getPrograms() {
 		Cursor cursor = getReadableDatabase().query(
 				TABLE_WORKOUT_PROGRAM_NAME,
@@ -183,6 +201,12 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 		
 		return cursor;
 	}
+	/**
+	 * Gets all of the {@link Workout}s in the workout table belonging
+	 * to the specified {@link WorkoutProgram}
+	 * @param programId	The _id of the {@link WorkoutProgram}
+	 * @return	Cursor pointing to the first {@link Workout} in the {@link WorkoutProgram}
+	 */
 	public Cursor getWorkouts(long programId) {
 		Cursor cursor = getReadableDatabase().query(
 				TABLE_WORKOUTS_NAME,
@@ -197,6 +221,10 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 			return null;
 		}
 	}
+	/**
+	 * Gets all of the {@link Workout}s in the workout table
+	 * @return	Cursor pointing to the first {@link Workout} in the table
+	 */
 	public Cursor getWorkouts() {
 		Cursor cursor = getReadableDatabase().query(
 				TABLE_WORKOUTS_NAME,
@@ -208,6 +236,12 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 		
 		return cursor;
 	}
+	/**
+	 * Gets all of the {@link Workout}s in the workout table
+	 * @param unique	If true, this function returns only {@link Workout}s with
+	 * 					distinct names.
+	 * @return			Cursor pointing to the first distinct {@link Workout} in the table
+	 */
 	public Cursor getWorkouts(boolean unique) {
 		if (unique) {
 			Cursor cursor = getReadableDatabase().query(
@@ -224,6 +258,11 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 		}
 		return null;
 	}
+	/**
+	 * Inserts a {@link WorkoutProgram} into the workout_program table
+	 * @param program	The {@link WorkoutProgram} to insert 
+	 * @return	_id of the inserted program, or -1 if an error occurred
+	 */
 	public long insertProgram(WorkoutProgram program) {
 		ContentValues values = new ContentValues();
 		values.put(COLUMN_PROGRAM_TITLE, program.getTitle());
@@ -233,6 +272,11 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 				null,
 				values);
 	}
+	/**
+	 * Inserts a {@link Exercise} into the exercises table
+	 * @param exercise	The {@link Exercise} to insert 
+	 * @return	_id of the inserted exercise, or -1 if an error occurred
+	 */
 	public long insertExercise(Exercise exercise) {
 		ContentValues values = new ContentValues();
 		values.put(COLUMN_EXERCISE_NAME, exercise.getName());
@@ -245,6 +289,11 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 				null,
 				values);
 	}
+	/**
+	 * Inserts a {@link Workout} into the workout table
+	 * @param workout	The {@link Workout} to insert 
+	 * @return	_id of the inserted workout, or -1 if an error occurred
+	 */
 	public long insertWorkout(Workout workout) {
 		ContentValues values = new ContentValues();
 		values.put(COLUMN_WORKOUT_NAME, workout.getTitle());
@@ -255,6 +304,11 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 				null,
 				values);
 	}
+	/**
+	 * Inserts a {@link ExerciseSet} into the workout table
+	 * @param set	The {@link ExerciseSet} to insert
+	 * @return	_id of the inserted set, or -1 if an error occurred
+	 */
 	public long insertSet(ExerciseSet set) {
 		ContentValues values = new ContentValues();
 		values.put(COLUMN_TARGET_REPS, set.getTargetReps());
