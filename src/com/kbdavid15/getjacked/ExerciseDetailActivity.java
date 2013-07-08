@@ -38,8 +38,8 @@ public class ExerciseDetailActivity extends FragmentActivity {
 			// Create the detail fragment and add it to the activity
 			// using a fragment transaction.
 			Bundle arguments = new Bundle();
-			arguments.putString(ExerciseDetailFragment.ARG_ITEM_ID, getIntent()
-					.getStringExtra(ExerciseDetailFragment.ARG_ITEM_ID));
+			arguments.putString(ExerciseDetailFragment.ARG_EXERCISE_ID, getIntent()
+					.getStringExtra(ExerciseDetailFragment.ARG_EXERCISE_ID));
 			ExerciseDetailFragment fragment = new ExerciseDetailFragment();
 			fragment.setArguments(arguments);
 			getSupportFragmentManager().beginTransaction()

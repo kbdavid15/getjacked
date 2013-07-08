@@ -1,5 +1,7 @@
 package com.kbdavid15.getjacked.workouts;
 
+import java.util.ArrayList;
+
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
@@ -164,6 +166,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 		Cursor cursor = getReadableDatabase().query(
 				TABLE_SETS_NAME,
 				new String[] { BaseColumns._ID,
+						COLUMN_EXERCISE_ID,
 						COLUMN_TARGET_REPS,
 						COLUMN_TARGET_WEIGHT,
 						COLUMN_TARGET_DURATION,
@@ -182,9 +185,39 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 	 * @param exerciseId	The _id of the {@link Exercise}
 	 * @return	Cursor pointing to the first {@link ExerciseSet} in the {@link Exercise}
 	 */
-	public Cursor getSets(long exerciseId) {
+	public Cursor getSetsCursor(long exerciseId) {
 		//TODO: implement this method
 		throw new UnsupportedOperationException("Not implemented yet");
+	}
+	/**
+	 * Gets all of the {@link ExerciseSet}s belonging to the {@link Exercise}
+	 * @param exerciseId	The _id of the {@link Exercise}
+	 * @return	List of {@link ExerciseSet}s
+	 */
+	public ArrayList<ExerciseSet> getSets(long exerciseId) {
+		ArrayList<ExerciseSet> exerciseSets = new ArrayList<ExerciseSet>();
+		Cursor cursor = getReadableDatabase().query(
+				TABLE_SETS_NAME,
+				new String[] { BaseColumns._ID,
+						COLUMN_EXERCISE_ID,
+						COLUMN_TARGET_REPS,
+						COLUMN_TARGET_WEIGHT,
+						COLUMN_TARGET_DURATION,
+						COLUMN_REPS,
+						COLUMN_WEIGHT,
+						COLUMN_DURATION },
+				COLUMN_EXERCISE_ID + " = " + String.valueOf(exerciseId),
+				null, null, null, null);
+		
+		if (cursor != null)
+			cursor.moveToFirst();
+		
+		while (!cursor.isAfterLast()) {
+			exerciseSets.add(new ExerciseSet(cursor));
+			cursor.moveToNext();
+		}
+		
+		return exerciseSets;
 	}
 	/**
 	 * Gets all of the {@link WorkoutProgram}s in the workout_program table
@@ -314,7 +347,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 		values.put(COLUMN_TARGET_REPS, set.getTargetReps());
 		values.put(COLUMN_TARGET_WEIGHT, set.getTargetWeight());
 		values.put(COLUMN_TARGET_DURATION, set.getTargetDuration().getTime());
-		values.put(COLUMN_REPS, set.getNumReps());
+		values.put(COLUMN_REPS, set.getReps());
 		values.put(COLUMN_WEIGHT, set.getWeight());
 		values.put(COLUMN_DURATION, set.getDuration().getTime());
 		values.put(COLUMN_EXERCISE_ID, set.getExerciseId());

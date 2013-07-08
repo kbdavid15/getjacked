@@ -1,5 +1,7 @@
 package com.kbdavid15.getjacked;
 
+import java.util.ArrayList;
+
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -8,6 +10,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.kbdavid15.getjacked.dummy.DummyContent;
+import com.kbdavid15.getjacked.workouts.ExerciseSet;
 
 /**
  * A fragment representing a single Exercise detail screen. This fragment is
@@ -19,12 +22,14 @@ public class ExerciseDetailFragment extends Fragment {
 	 * The fragment argument representing the item ID that this fragment
 	 * represents.
 	 */
-	public static final String ARG_ITEM_ID = "item_id";
+	public static final String ARG_EXERCISE_ID = "exercise_id";
 
 	/**
 	 * The dummy content this fragment is presenting.
 	 */
 	private DummyContent.DummyItem mItem;
+	
+	private ArrayList<ExerciseSet> mSets;
 
 	/**
 	 * Mandatory empty constructor for the fragment manager to instantiate the
@@ -37,12 +42,12 @@ public class ExerciseDetailFragment extends Fragment {
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 
-		if (getArguments().containsKey(ARG_ITEM_ID)) {
+		if (getArguments().containsKey(ARG_EXERCISE_ID)) {
 			// Load the dummy content specified by the fragment
 			// arguments. In a real-world scenario, use a Loader
 			// to load content from a content provider.
 			mItem = DummyContent.ITEM_MAP.get(getArguments().getString(
-					ARG_ITEM_ID));
+					ARG_EXERCISE_ID));
 		}
 	}
 

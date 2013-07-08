@@ -94,13 +94,13 @@ public class ExerciseListActivity extends FragmentActivity implements
 	 * that the item with the given ID was selected.
 	 */
 	@Override
-	public void onItemSelected(String id) {
+	public void onItemSelected(long id) {
 		if (mTwoPane) {
 			// In two-pane mode, show the detail view in this activity by
 			// adding or replacing the detail fragment using a
 			// fragment transaction.
 			Bundle arguments = new Bundle();
-			arguments.putString(ExerciseDetailFragment.ARG_ITEM_ID, id);
+			arguments.putLong(ExerciseDetailFragment.ARG_EXERCISE_ID, id);
 			ExerciseDetailFragment fragment = new ExerciseDetailFragment();
 			fragment.setArguments(arguments);
 			getSupportFragmentManager().beginTransaction()
@@ -110,7 +110,7 @@ public class ExerciseListActivity extends FragmentActivity implements
 			// In single-pane mode, simply start the detail activity
 			// for the selected item ID.
 			Intent detailIntent = new Intent(this, ExerciseDetailActivity.class);
-			detailIntent.putExtra(ExerciseDetailFragment.ARG_ITEM_ID, id);
+			detailIntent.putExtra(ExerciseDetailFragment.ARG_EXERCISE_ID, id);
 			startActivity(detailIntent);
 		}
 	}
