@@ -10,6 +10,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.kbdavid15.getjacked.dummy.DummyContent;
+import com.kbdavid15.getjacked.workouts.DatabaseHelper;
 import com.kbdavid15.getjacked.workouts.ExerciseSet;
 
 /**
@@ -23,11 +24,6 @@ public class ExerciseDetailFragment extends Fragment {
 	 * represents.
 	 */
 	public static final String ARG_EXERCISE_ID = "exercise_id";
-
-	/**
-	 * The dummy content this fragment is presenting.
-	 */
-	private DummyContent.DummyItem mItem;
 	
 	private ArrayList<ExerciseSet> mSets;
 
@@ -46,8 +42,7 @@ public class ExerciseDetailFragment extends Fragment {
 			// Load the dummy content specified by the fragment
 			// arguments. In a real-world scenario, use a Loader
 			// to load content from a content provider.
-			mItem = DummyContent.ITEM_MAP.get(getArguments().getString(
-					ARG_EXERCISE_ID));
+			mSets = DatabaseHelper.getInstance(getActivity()).getSets(getArguments().getLong(ARG_EXERCISE_ID));
 		}
 	}
 
@@ -58,9 +53,13 @@ public class ExerciseDetailFragment extends Fragment {
 				container, false);
 
 		// Show the dummy content as text in a TextView.
-		if (mItem != null) {
-			((TextView) rootView.findViewById(R.id.exercise_detail))
-					.setText(mItem.content);
+		if (!mSets.isEmpty()) {
+			// create a new set layout for each set in the list
+			for (ExerciseSet set : mSets) {
+				TextView t = new TextView(inflater.getContext());
+				t.setText("Reps: " + set.getTargetReps());
+				container.addView(t);
+			}
 		}
 
 		return rootView;

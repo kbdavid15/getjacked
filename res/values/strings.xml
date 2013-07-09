@@ -41,5 +41,6 @@
     <string name="li_weight">Weight</string>
     <string name="title_exercise_list">Exercises</string>
     <string name="title_exercise_detail">Exercise Detail</string>
+    <string name="title_new_set">New Set</string>
 
 </resources>
